@@ -1,0 +1,20 @@
+jbofengo:
+	- Implement the logic to put each one of the 7 existing pieces on the window
+	- Handle the key press hooks to:
+		* Move
+		* Change position
+		* Put on hold
+		* And make the pieces fall down instantly
+	- Work with the time to make sure all the above work remains smoth
+efinda:
+	- Initialize, allocate, and deallocate all the resources used during the program.
+	- Create the background design that includes:
+		* Hold Piece Box
+		* Next Pieces Box
+		* Informations about the state of the game: score of the player and the time is playing
+		* Background image and the main window where the pieces will be placed
+
+-------------------------------------------------------------------------------------------------------------------
+
+Things to do later:
+	*Implement music*
