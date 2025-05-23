@@ -1,0 +1,3 @@
+[submodule "my_mlx"]
+	path = my_mlx
+	url = git@github.com:3dsonnn/my_mlx.git
