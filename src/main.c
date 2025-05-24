@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:07:33 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/23 13:08:01 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/24 13:31:14 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,4 +14,9 @@
 
 int	main(int ac, char **av)
 {
+    t_tetr  tetr;
+
+    init_tetr(&tetr);
+    mlx_loop(tetr.mlx);
+    return (0);
 }

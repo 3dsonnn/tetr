@@ -6,13 +6,20 @@
 #    By: efinda <efinda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/23 13:08:10 by efinda            #+#    #+#              #
-#    Updated: 2025/05/23 13:08:41 by efinda           ###   ########.fr        #
+#    Updated: 2025/05/24 14:01:55 by efinda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = tetr
 
-SRC =	src/main.c					\
+SRC =	src/main.c				\
+		src/init_tetr.c			\
+		src/deallocate_tetr.c	\
+		src/tile/set.c			\
+		src/tile/init.c			\
+		src/tile/free.c			\
+		src/tile/link.c			\
+		src/tile/utils.c		\
 
 CC = cc
 RM = rm -rf
