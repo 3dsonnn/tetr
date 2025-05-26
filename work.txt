@@ -12,7 +12,7 @@ efinda:
 		* Hold Piece Box
 		* Next Pieces Box
 		* Informations about the state of the game: score of the player and the time is playing
-		* Background image and the main window where the pieces will be placed
+		* Background image and the main window where the pieces will be placed (done!)
 
 -------------------------------------------------------------------------------------------------------------------
 

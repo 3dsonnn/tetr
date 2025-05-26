@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:09:47 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/24 12:18:50 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 08:14:50 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ void    init_tetr(t_tetr *tetr)
     my_mlx_init_img(&tetr->main_img);
     my_mlx_init_img(&tetr->background_img);
     tetr->tiles = NULL;
-    tetr->total_tiles = (t_point){0, 0};
+    tetr->player.name = NULL;
 }
