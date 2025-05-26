@@ -6,7 +6,7 @@
 #    By: efinda <efinda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/23 13:08:10 by efinda            #+#    #+#              #
-#    Updated: 2025/05/24 14:01:55 by efinda           ###   ########.fr        #
+#    Updated: 2025/05/26 07:52:57 by efinda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,18 @@ NAME = tetr
 
 SRC =	src/main.c				\
 		src/init_tetr.c			\
+		src/hooks.c				\
+		src/prompt_user.c		\
 		src/deallocate_tetr.c	\
+		src/setup/mlx.c			\
+		src/setup/design.c		\
+		src/setup/setup_game.c	\
 		src/tile/set.c			\
 		src/tile/init.c			\
 		src/tile/free.c			\
 		src/tile/link.c			\
 		src/tile/utils.c		\
+		src/tile/paint.c		\
 
 CC = cc
 RM = rm -rf
