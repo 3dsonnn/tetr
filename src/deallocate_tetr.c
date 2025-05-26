@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:13:27 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/24 14:02:45 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 08:20:16 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ void    deallocate_tetr(t_tetr *tetr, char *message, int status)
         ft_dprintf(2, "Error!\n%s\n", message);
     my_mlx_destroy_img(tetr->mlx, &tetr->main_img);
     my_mlx_destroy_img(tetr->mlx, &tetr->background_img);
-    free_tiles(&tetr->tiles, tetr->total_tiles.y);
+    free_tiles(&tetr->tiles, TOTAL_TILE_Y);
+    ft_strfree(&tetr->player.name);
     if (tetr->mlx && tetr->win)
         mlx_destroy_window(tetr->mlx, tetr->win);
     if (tetr->mlx)
@@ -26,4 +27,5 @@ void    deallocate_tetr(t_tetr *tetr, char *message, int status)
         mlx_destroy_display(tetr->mlx);
         free(tetr->mlx);
     }
+    exit(status);
 }
