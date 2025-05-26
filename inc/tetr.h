@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 08:19:28 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 18:35:10 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,15 @@ void		deallocate_tetr(t_tetr *tetr, char *message, int status);
 // PROMPT_USER
 void		prompt_user(t_tetr *tetr);
 
+// SETUP
+void		setup_game(t_tetr *tetr);
+
 // DESIGN
 void    design_tiles_divisions(t_img *background, t_tile **tiles);
-void	design_hold_tile_box(t_img *background_img, t_tile **tiles);
-void	design_next_tile_box(t_img *background_img, t_tile **tiles);
+void	design_border(t_img *background_img, t_tile **tiles);
+void	design_hold_box(t_img *background_img, t_tile **tiles, t_point *hold_box_crd);
+void    design_imbroglio_bar(t_img *background_img, t_tile **tiles, t_plane *imbroglio_bar);
+void	design_next_box(t_img *background_img, t_tile **tiles, t_point *next_box_crd, t_point start);
 
 // INIT_MLX
 void		setup_mlx(t_tetr *tetr);
