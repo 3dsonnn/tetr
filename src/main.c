@@ -115,52 +115,52 @@ void	get_obj_body(t_tile *this_tile, t_tile *obj_body[3], const char *components
 
 t_obj	*get_object_data(t_obj_type type)
 {
-	static const char		*t_form[3] = {
-									"010",
-	    							"111",
-								    "000"
+	static const char	*t_form[3] = {
+						"010",
+						"111",
+						"000"
 	};
-	static const char		*j_form[3] = {
-									"001",
-	    							"111",
-								    "000"
+	static const char	*j_form[3] = {
+						"001",
+						"111",
+						"000"
 	};
-	static const char		*l_form[3] = {
-									"100",
-	    							"111",
-								    "000"
+	static const char	*l_form[3] = {
+						"100",
+						"111",
+						"000"
 	};
-	static const char		*s_form[3] = {
-									"0110",
-	    							"1100",
-								    "0000"
+	static const char	*s_form[3] = {
+						"0110",
+						"1100",
+						"0000"
 	};
-	static const char		*z_form[3] = {
-									"1100",
-	    							"0110",
-								    "0000"
+	static const char	*z_form[3] = {
+						"1100",
+						"0110",
+						"0000"
 	};
-	static const char		*stick[4] = {
-									"0000"
-									"1111",
-	    							"0000",
-									"0000"
+	static const char	*stick[4] = {
+						"0000",
+						"1111",
+						"0000",
+						"0000"
 	};
-	static const char		*block[2] = {
-									"11",
-	    							"11"
+	static const char	*block[2] = {
+						"11",
+						"11"
 	};
-	static t_obj objs_data[7] = {
-			{.type = BLOCK, .color = 0xFFFF00, .design = block, .matrix_len = 2},
-			{.type = T_OBJ, .color = 0x800080, .design = t_form, .matrix_len = 3},
-			{.type = J_OBJ, .color = 0xFFA500, .design = j_form, .matrix_len = 3},
-			{.type = L_OBJ, .color = 0x00008B, .design = l_form, .matrix_len = 3},
-			{.type = S_OBJ, .color = 0x008000, .design = s_form, .matrix_len = 3},
-			{.type = Z_OBJ, .color = 0xFF0000, .design = z_form, .matrix_len = 3},
+	static t_obj		objs_data[7] = {
+			{.type = BLOCK, .color = 0xFFD700, .design = block, .matrix_len = 2},
+			{.type = T_OBJ, .color = 0xBA55D3, .design = t_form, .matrix_len = 3},
+			{.type = J_OBJ, .color = 0xFF8C00, .design = j_form, .matrix_len = 3},
+			{.type = L_OBJ, .color = 0x7B68EE, .design = l_form, .matrix_len = 3},
+			{.type = S_OBJ, .color = 0x9ACD32, .design = s_form, .matrix_len = 3},
+			{.type = Z_OBJ, .color = 0xFF4500, .design = z_form, .matrix_len = 3},
 			{.type = STICK, .color = 0xADD8E6, .design = stick, .matrix_len = 4},
 	};
 
-	int						i;
+	int			i;
 
 	i = -1;
 	while (++i < 7)
@@ -207,13 +207,13 @@ void	render_map(t_tetr *vars, t_obj *datas)
 
 int	main(void)
 {
-    t_tetr  tetr;
+	t_tetr	tetr;
 
-    init_tetr(&tetr);
-    // prompt_user(&tetr);
-    setup_game(&tetr);
-	render_map(&tetr, get_object_data(J_OBJ));
-    my_mlx_hooks(&tetr);
-    mlx_loop(tetr.mlx);
-    return (0);
+	init_tetr(&tetr);
+	// prompt_user(&tetr);
+	setup_game(&tetr);
+	render_map(&tetr, get_object_data(STICK));
+	my_mlx_hooks(&tetr);
+	mlx_loop(tetr.mlx);
+	return (0);
 }
