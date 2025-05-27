@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:13 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 16:03:34 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/27 20:31:35 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,16 @@ void	setup_mlx(t_tetr *tetr)
 	my_mlx_get_data_addr(&tetr->main_img);
 	if (!tetr->main_img.addr)
 		deallocate_tetr(tetr, "Failed to get the address of the main image.", 1);
-    mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->background_img.img, 0, 0);
+	my_mlx_put_img_to_img((t_img_to_img){
+		.dst = &tetr->main_img,
+		.src = tetr->background_img,
+		.aux = NULL,
+		.dst_point = (t_point){0, 0},
+		.src_point = (t_point){0, 0},
+		.size = (t_point){WIDTH, HEIGHT},
+		.filter = 0,
+		.skip = 0,
+		.color_aux = 0
+	});
+    mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->main_img.img, 0, 0);
 }
