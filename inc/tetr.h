@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 18:35:10 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 08:19:28 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@
 # include <time.h>
 # include <math.h>
 
-# define WIDTH 1920
-# define HEIGHT 1010
+# define WIDTH 1000
+# define HEIGHT 1000
 
 # define TILE 32
 # define TOTAL_TILE_X 10
@@ -44,6 +44,8 @@
 
 // INIT_TETR
 void		init_tetr(t_tetr *tetr);
+void	    setup_tiles(t_tetr *tetr, t_tile ***tiles);
+
 
 // DEALLOCATE_TETR
 void		deallocate_tetr(t_tetr *tetr, char *message, int status);
@@ -51,18 +53,14 @@ void		deallocate_tetr(t_tetr *tetr, char *message, int status);
 // PROMPT_USER
 void		prompt_user(t_tetr *tetr);
 
-// SETUP
-void		setup_game(t_tetr *tetr);
-
 // DESIGN
 void    design_tiles_divisions(t_img *background, t_tile **tiles);
-void	design_border(t_img *background_img, t_tile **tiles);
-void	design_hold_box(t_img *background_img, t_tile **tiles, t_point *hold_box_crd);
-void    design_imbroglio_bar(t_img *background_img, t_tile **tiles, t_plane *imbroglio_bar);
-void	design_next_box(t_img *background_img, t_tile **tiles, t_point *next_box_crd, t_point start);
+void	design_hold_tile_box(t_img *background_img, t_tile **tiles);
+void	design_next_tile_box(t_img *background_img, t_tile **tiles);
 
 // INIT_MLX
 void		setup_mlx(t_tetr *tetr);
+void		setup_game(t_tetr *tetr);
 
 // HOOKS
 void		my_mlx_hooks(t_tetr *tetr);

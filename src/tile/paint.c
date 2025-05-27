@@ -19,10 +19,10 @@ void    paint_tile(t_tile *tile, t_img *img)
     if (!tile)
         return ;
     iter = (t_point){.x = -1, .y = -1};
-    while (++iter.y < TILE)
+    while (++iter.y < TILE - 1)
     {
         iter.x = -1;
-        while (++iter.x < TILE)
+        while (++iter.x < TILE - 1)
             my_mlx_pixel_put(img, tile->crd.x + iter.x, tile->crd.y + iter.y, tile->color);
     }
 }

@@ -6,13 +6,13 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:16 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 18:48:44 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 08:17:07 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tetr.h"
 
-static void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
+ void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
 {
 	t_point	padd;
 	t_point	half_tiles;
@@ -29,11 +29,14 @@ static void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
 
 static void	setup_design(t_tetr *tetr, t_tile **tiles, t_img *background_img)
 {
+    t_tile  *first;
+    int     line_thickness;
+
+    first = *tiles;
+    line_thickness = 3;
     design_tiles_divisions(background_img, tetr->tiles);
-	design_border(background_img, tetr->tiles);
-    design_hold_box(background_img, tetr->tiles, &tetr->hold_box_crd);
-	design_imbroglio_bar(background_img, tetr->tiles, &tetr->imbroglio_bar_crd);
-    design_next_box(background_img, tetr->tiles, &tetr->next_box_crd, (t_point){tetr->imbroglio_bar_crd.x + 3, tetr->imbroglio_bar_crd.y0});
+    design_hold_tile_box(background_img, tetr->tiles);
+    design_next_tile_box(background_img, tetr->tiles);
 }
 
 void	setup_game(t_tetr *tetr)

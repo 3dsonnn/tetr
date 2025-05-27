@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:13 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 16:03:34 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/26 08:11:46 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 static void	get_background_img(t_tetr *tetr, t_img *img)
 {
-	const char	*paths[] = {SKY, HOME, JPINA, OCEAN, BONFIRE, CLUSTER};
+	const char	*paths[] = {SKY, JPINA, OCEAN, BONFIRE, CLUSTER};
 	int			index;
 
-	index = rand() % 6;
-    if (open((char *)paths[index], O_RDONLY) < 0)
+	index = rand() % 5;
+	if (open((char *)paths[index], O_RDONLY) < 0)
 		deallocate_tetr(tetr, strerror(errno), 1);
 	img->img = mlx_xpm_file_to_image(tetr->mlx, (char *)paths[index], &img->size.x, &img->size.y);
 	if (!img->img)
-		deallocate_tetr(tetr, "Failed to convert the .xpm file into an image. Make sure the assets weren't modified, and then you can try again, please!", 1);
-    my_mlx_get_data_addr(img);
-    if (!img->addr)
+		deallocate_tetr(tetr,
+			"Failed to convert the .xpm file into an image. Make sure the assets weren't modified, and then you can try again, please!", 1);
+	my_mlx_get_data_addr(img);
+	if (!img->addr)
 		deallocate_tetr(tetr, "Failed to get the address of the background image.", 1);
-    my_mlx_resize_img(tetr->mlx, img, (t_point){WIDTH, HEIGHT});
+	my_mlx_resize_img(tetr->mlx, img, (t_point){WIDTH, HEIGHT});
 }
 
 void	setup_mlx(t_tetr *tetr)
