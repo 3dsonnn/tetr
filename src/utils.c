@@ -1,26 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_tetr.c                                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 12:09:47 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 20:30:57 by efinda           ###   ########.fr       */
+/*   Created: 2025/05/27 11:17:08 by efinda            #+#    #+#             */
+/*   Updated: 2025/05/27 11:17:16 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/tetr.h"
-
-void    init_tetr(t_tetr *tetr)
-{
-    tetr->mlx = NULL;
-    tetr->win = NULL;
-    my_mlx_init_img(&tetr->main_img);
-    my_mlx_init_img(&tetr->background_img);
-    tetr->hold_box_size = (t_plane){0, 0, 0, 0};
-    tetr->next_box_size = (t_plane){0, 0, 0, 0};
-    tetr->imbroglio_bar_size = (t_plane){0, 0, 0, 0};
-    tetr->tiles = NULL;
-    tetr->player.name = NULL;
-}
