@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:58:58 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 17:36:13 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/27 20:30:16 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,23 @@ typedef struct s_plane
 	int				y;
 }					t_plane;
 
+typedef enum e_ID
+{
+	SQUARE,
+	T_SHAPE,
+	L_SHAPE,
+	TILTED_Z,
+	TILTED_S,
+	STRAIGHT,
+	L_MIRRORED
+}					t_ID;
+
+typedef struct s_piece
+{
+	int				id;
+	int				color;
+}					t_piece;
+
 typedef struct s_tile
 {
 	int				color;
@@ -61,9 +78,9 @@ typedef struct s_tetr
 	t_img			main_img;
 	t_img			background_img;
 	t_tile			**tiles;
-	t_point			hold_box_crd;
-	t_point			next_box_crd;
-	t_plane			imbroglio_bar_crd;
+	t_plane			hold_box_size;
+	t_plane			next_box_size;
+	t_plane			imbroglio_bar_size;
 	t_player		player;
 }					t_tetr;
 

@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 18:35:10 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/27 20:29:37 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,25 @@ void		setup_game(t_tetr *tetr);
 
 // DESIGN
 void    design_tiles_divisions(t_img *background, t_tile **tiles);
-void	design_border(t_img *background_img, t_tile **tiles);
-void	design_hold_box(t_img *background_img, t_tile **tiles, t_point *hold_box_crd);
-void    design_imbroglio_bar(t_img *background_img, t_tile **tiles, t_plane *imbroglio_bar);
-void	design_next_box(t_img *background_img, t_tile **tiles, t_point *next_box_crd, t_point start);
+void	design_border(t_img *main_img, t_tile **tiles);
+void    design_imbroglio_bar(t_img *main_img, t_tile **tiles, t_plane *imbroglio_bar);
+void	design_hold_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size);
+void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size, t_point start);
+
+// PIECES
+t_piece get_random_piece(void);
+void    put_piece(t_piece ref, t_plane size, t_img *img);
+// PUT
+void    square(t_point start, t_tile *tile, t_img *img);
+void    straight(t_point start, t_tile *tile, t_img *img);
+void    tilted_z(t_point start, t_tile *tile, t_img *img);
+void    tilted_s(t_point start, t_tile *tile, t_img *img);
+void    t_shape(t_point start, t_tile *tile, t_img *img);
+void    l_shape(t_point start, t_tile *tile, t_img *img);
+void    l_mirrored(t_point start, t_tile *tile, t_img *img);
+
+//  NEXT_BOX
+void    fill_next_box(t_tetr *tetr, t_img *main_img, t_plane size);
 
 // INIT_MLX
 void		setup_mlx(t_tetr *tetr);
