@@ -33,13 +33,13 @@
 
 typedef enum	e_piece
 {
-	L_OBJ,
+	BLOCK,
+	T_OBJ,
 	J_OBJ,
+	L_OBJ,
 	S_OBJ,
 	Z_OBJ,
-	T_OBJ,
-	STICK,
-	BLOCK
+	STICK
 }	t_obj_type;
 
 typedef struct s_tile
@@ -54,11 +54,11 @@ typedef struct s_tile
 
 typedef struct	s_obj
 {
-	t_obj_type		type;
+	char			design[4][4];
 	unsigned int	color;
-	const char		**design;
-	int				matrix_len;
-	int				start_index;
+	t_obj_type		type;
+	unsigned int	matrix_len;
+	t_point			start_index;
 }	t_obj;
 
 typedef struct s_player

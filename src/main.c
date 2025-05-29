@@ -113,62 +113,102 @@ void	get_obj_body(t_tile *this_tile, t_tile *obj_body[3], const char *components
 }
 */
 
+void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
+{
+	t_point	iter;
+
+	iter.y = -1;
+	while (++iter.y < src_size)
+	{
+		iter.x = -1;
+		while (++iter.x < src_size)
+			dst[iter.y][iter.x] = src[iter.y][iter.x];
+	}
+}
+
 t_obj	*get_object_data(t_obj_type type)
 {
-	static const char	*t_form[3] = {
-						"010",
-						"111",
-						"000"
-	};
-	static const char	*j_form[3] = {
-						"001",
-						"111",
-						"000"
-	};
-	static const char	*l_form[3] = {
-						"100",
-						"111",
-						"000"
-	};
-	static const char	*s_form[3] = {
-						"0110",
-						"1100",
-						"0000"
-	};
-	static const char	*z_form[3] = {
-						"1100",
-						"0110",
-						"0000"
-	};
-	static const char	*stick[4] = {
-						"0000",
-						"1111",
-						"0000",
-						"0000"
-	};
-	static const char	*block[2] = {
-						"11",
-						"11"
-	};
 	static t_obj		objs_data[7] = {
-			{.type = BLOCK, .color = 0xFFD700, .design = block, .matrix_len = 2},
-			{.type = T_OBJ, .color = 0xBA55D3, .design = t_form, .matrix_len = 3},
-			{.type = J_OBJ, .color = 0xFF8C00, .design = j_form, .matrix_len = 3},
-			{.type = L_OBJ, .color = 0x7B68EE, .design = l_form, .matrix_len = 3},
-			{.type = S_OBJ, .color = 0x9ACD32, .design = s_form, .matrix_len = 3},
-			{.type = Z_OBJ, .color = 0xFF4500, .design = z_form, .matrix_len = 3},
-			{.type = STICK, .color = 0xADD8E6, .design = stick, .matrix_len = 4},
+			{.type = BLOCK, .color = 0xFFD700, .matrix_len = 2},
+			{.type = T_OBJ, .color = 0xBA55D3, .matrix_len = 3},
+			{.type = J_OBJ, .color = 0x7B68EE, .matrix_len = 3},
+			{.type = L_OBJ, .color = 0xFF8C00, .matrix_len = 3},
+			{.type = S_OBJ, .color = 0x9ACD32, .matrix_len = 3},
+			{.type = Z_OBJ, .color = 0xFF4500, .matrix_len = 3},
+			{.type = STICK, .color = 0xADD8E6, .matrix_len = 4},
 	};
-
+	static char const	block[4][4] = {
+						{'1', '1', '0', '0'},
+						{'1', '1', '0', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	t_form[4][4] = {
+						{'0', '1', '0', '0'},
+						{'1', '1', '1', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	j_form[4][4] = {
+						{'1', '0', '0', '0'},
+						{'1', '1', '1', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	l_form[4][4] = {
+						{'0', '0', '1', '0'},
+						{'1', '1', '1', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	s_form[4][4] = {
+						{'0', '1', '1', '0'},
+						{'1', '1', '0', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	z_form[4][4] = {
+						{'1', '1', '0', '0'},
+						{'0', '1', '1', '0'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static char const	stick[4][4] = {
+						{'0', '0', '0', '0'},
+						{'1', '1', '1', '1'},
+						{'0', '0', '0', '0'},
+						{'0', '0', '0', '0'}
+	};
+	static const char	(*forms[7])[4] = {block, t_form, j_form, l_form, s_form, z_form, stick};
 	int			i;
 
 	i = -1;
 	while (++i < 7)
 	{
 		if (type == objs_data[i].type)
+		{
+			copy_matrix(forms[objs_data[i].type], objs_data[i].matrix_len, objs_data[i].design);
 			return (&objs_data[i]);
+		}
 	}
 	return (NULL);
+}
+
+void	rotate_object(t_obj *obj)
+{
+	char	old_form[4][4];
+	t_point		iter;
+
+	if (obj->type == BLOCK)
+		return ;
+	copy_matrix(obj->design, obj->matrix_len, old_form);
+	iter.y = -1;
+	while (++iter.y < obj->matrix_len)
+	{
+		iter.x = -1;
+		while (++iter.x < obj->matrix_len)
+			obj->design[iter.x][iter.y] = old_form[iter.y][iter.x];
+	}
 }
 
 void	design_object(t_tetr *vars)
@@ -182,11 +222,11 @@ void	design_object(t_tetr *vars)
 	while (++iter.y < object->matrix_len)
 	{
 		iter.x = -1;
-		while (object->design[iter.y][++iter.x])
+		while (++iter.x < object->matrix_len)
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
-				this_tile = &vars->tiles[iter.y][object->start_index + iter.x];
+				this_tile = &vars->tiles[object->start_index.y + iter.y][object->start_index.x + iter.x];
 				this_tile->color = object->color;
 				paint_tile(this_tile, &vars->background_img);
 			}
@@ -201,7 +241,9 @@ void	render_map(t_tetr *vars, t_obj *datas)
 	if (!datas)
 		return ;
 	vars->obj = datas;
-	vars->obj->start_index = ((TOTAL_TILE_X - datas->matrix_len) / 2);
+	vars->obj->start_index.y = 0;
+	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len) / 2);
+	rotate_object(vars->obj);
 	design_object(vars);
 }
 
@@ -212,7 +254,7 @@ int	main(void)
 	init_tetr(&tetr);
 	// prompt_user(&tetr);
 	setup_game(&tetr);
-	render_map(&tetr, get_object_data(STICK));
+	render_map(&tetr, get_object_data(BLOCK));
 	my_mlx_hooks(&tetr);
 	mlx_loop(tetr.mlx);
 	return (0);
