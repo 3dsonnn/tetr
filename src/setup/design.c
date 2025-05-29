@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:53:48 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 20:31:56 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/29 15:24:14 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	design_hold_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *siz
         (t_point){(TILE * 5) + line_thickness, line_thickness}, WHITE);
     mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "HOLD");
 }
-// ft_center_range
+
 void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size, t_point start)
 {
     t_tile  *last_on_line;
@@ -115,4 +115,18 @@ void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *siz
         (t_point){start.x + (TILE * 5), start.y},
         (t_point){line_thickness, (TILE * 14) + line_thickness}, WHITE);
 	mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "NEXT");
+}
+
+void	design_time_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_plane hold_box_size)
+{
+    int     line_thickness;
+
+    line_thickness = 3;
+	*size = hold_box_size;
+	size->y0 += (TILE * 18) + 19;
+	size->y = size->y0 + TILE + 1;
+    my_mlx_draw_line_to_img(main_img,
+        (t_point){size->x0 - line_thickness, size->y0 - (TILE + 1)},
+        (t_point){(size->x - size->x0) + line_thickness, (size->y - size->y0) + (TILE + 1)}, WHITE);
+    mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "TIME");
 }
