@@ -6,7 +6,7 @@
 #    By: efinda <efinda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/23 13:08:10 by efinda            #+#    #+#              #
-#    Updated: 2025/05/27 19:01:41 by efinda           ###   ########.fr        #
+#    Updated: 2025/05/29 15:15:07 by efinda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME = tetr
 
 SRC =	src/main.c						\
 		src/init_tetr.c					\
+		src/update_scenario.c			\
 		src/hooks.c						\
 		src/prompt_user.c				\
 		src/deallocate_tetr.c			\
@@ -27,9 +28,12 @@ SRC =	src/main.c						\
 		src/tile/utils.c				\
 		src/tile/paint.c				\
 		src/boxes_management/next.c		\
+		src/boxes_management/shared.c	\
 		src/boxes_management/hold.c		\
+		src/boxes_management/time.c		\
 		src/pieces/get_random_piece.c	\
 		src/pieces/put_piece.c			\
+		src/pieces/update_piece.c		\
 		src/pieces/put/square.c			\
 		src/pieces/put/l_mirrored.c		\
 		src/pieces/put/l_shape.c		\

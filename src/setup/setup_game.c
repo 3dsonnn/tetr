@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:16 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 20:31:20 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/29 15:10:27 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,20 @@ static void	setup_design(t_tetr *tetr, t_tile **tiles, t_img *main_img)
 	design_border(main_img, tetr->tiles);
 	design_imbroglio_bar(main_img, tetr->tiles, &tetr->imbroglio_bar_size);
     design_hold_box(tetr, main_img, tetr->tiles, &tetr->hold_box_size);
+    design_time_box(tetr, main_img, &tetr->time_box_size, tetr->hold_box_size);
     design_next_box(tetr, main_img, tetr->tiles, &tetr->next_box_size, (t_point){tetr->imbroglio_bar_size.x + 3, tetr->imbroglio_bar_size.y0});
 }
 
 void	setup_game(t_tetr *tetr)
 {
+	int	i;
+
+	i = -1;
 	setup_mlx(tetr);
 	setup_tiles(tetr, &tetr->tiles);
 	setup_design(tetr, tetr->tiles, &tetr->main_img);
-	fill_next_box(tetr, &tetr->main_img, tetr->next_box_size);
+	tetr->cur = get_random_piece();
+	while (++i < 5)
+		tetr->next_stack[i] = get_random_piece();
+	fill_next_box(tetr, tetr->next_box_size);
 }
