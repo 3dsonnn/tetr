@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/tetr.h"
+#include <stdio.h>
 
 int	ft_close(int keycode, t_tetr *vars)
 {
@@ -33,85 +34,6 @@ int	ft_destroy_window(t_tetr *vars)
 	free(vars->mlx);
 	exit(0);
 }
-/*
-
-void	render_obj(t_tetr *vars)
-{
-	t_tile	*runner;
-	t_tile	*aux;
-	t_point	pos;
-
-	pos = vars->obj.center;
-	runner = &vars->tiles[pos.x][pos.y];
-	runner->color = 0x00FF00;
-	// if (vars->obj.type == RIGHT_L)
-	// {
-	// 	pos.y = -1;
-	// 	while (runner && ++pos.y < 3)
-	// 	{
-	// 		runner->color = vars->obj.color;
-	// 		paint_tile(runner, &vars->main_img);
-	// 		runner = runner->up;
-	// 	}
-	// 	if (!runner || !runner->right)
-	// 		return ;
-	// 	printf("%p\n", runner->right);
-	// 	//runner->right->color = vars->obj.color;
-	// 	write(2, "here\n", 5);
-	// }
-	aux = &vars->tiles[0][0];;
-	for (int i = 0; i < 4; i++)
-	{
-		paint_tile(aux, &vars->main_img);
-		if (i + 1 == 4)
-			aux = aux->right;
-		else
-			aux = aux->down;
-		ft_printf("i=%d\n", i);
-		if (!aux)
-			return ;
-	}
-	ft_printf("AAAAAAAAAAAAAA\n");
-}
-
-const char	*get_instructions(t_obj_type type)
-{
-	if (type == RIGHT_L)
-		return ("U");
-	else if (type == LEFT_L)
-		return ("");
-	return ("");
-}
-
-void	get_obj_body(t_tile *this_tile, t_tile *obj_body[3], const char *components)
-{
-	t_tile	*next_tile;
-	int		i;
-
-	if (!components || !*components)
-	{
-		obj_body[0] = NULL;
-		return ;
-	}
-	i = 0;
-	while (components[i])
-	{
-		if (components[i] == 'D')
-			next_tile = this_tile->down;
-		else if (components[i] == 'L')
-			next_tile = this_tile->left;
-		else if (components[i] == 'R')
-			next_tile = this_tile->right;
-		if (!next_tile)
-		{
-			obj_body[0] = NULL;
-			return ;
-		}
-		obj_body[i++] = next_tile;
-		this_tile = next_tile;
-	}
-}
-*/
 
 void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
 {
@@ -187,6 +109,7 @@ t_obj	*get_object_data(t_obj_type type)
 	{
 		if (type == objs_data[i].type)
 		{
+			objs_data[i].x_start_padding = 0;
 			copy_matrix(forms[objs_data[i].type], objs_data[i].matrix_len, objs_data[i].design);
 			return (&objs_data[i]);
 		}
@@ -196,27 +119,69 @@ t_obj	*get_object_data(t_obj_type type)
 
 void	rotate_object(t_obj *obj)
 {
-	char	old_form[4][4];
+	char		old_form[4][4];
+	int			reverse_index;
 	t_point		iter;
 
 	if (obj->type == BLOCK)
 		return ;
 	copy_matrix(obj->design, obj->matrix_len, old_form);
 	iter.y = -1;
+	obj->x_start_padding = TOTAL_TILE_X;
 	while (++iter.y < obj->matrix_len)
 	{
 		iter.x = -1;
 		while (++iter.x < obj->matrix_len)
-			obj->design[iter.x][iter.y] = old_form[iter.y][iter.x];
+		{
+			reverse_index = obj->matrix_len - iter.y - 1;
+			obj->design[iter.x][reverse_index] = old_form[iter.y][iter.x];
+			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->x_start_padding)
+				obj->x_start_padding = reverse_index;
+		}
+	}
+	printf("padding: %d\n", obj->x_start_padding);
+	for (int i = 0; i < obj->matrix_len; i++)
+	{
+		for (int j = 0; j < obj->matrix_len; j++)
+		{
+			write(1, &obj->design[i][j], 1);
+			write(1, " ", 1);
+		}
+		write(1, "\n", 1);
 	}
 }
 
-void	design_object(t_tetr *vars)
+void	paint_object_tile(t_tetr *tetr, t_tile *this_tile)
 {
-	t_tile		*this_tile;
+	t_obj	*object;
+
+	object = tetr->obj;
+	this_tile->color = object->color;
+	paint_tile(this_tile, &tetr->background_img);
+}
+
+void	erase_object_tile(t_tetr *tetr, t_tile *this_tile)
+{
+	my_mlx_put_img_to_img((t_img_to_img){
+		.dst = &tetr->background_img,
+		.src = tetr->main_img,
+		.aux = NULL,
+		.dst_point = (t_point){this_tile->crd.x + 1, this_tile->crd.y + 1},
+		.src_point = (t_point){this_tile->crd.x + 1, this_tile->crd.y + 1},
+		.size = (t_point){.x = TILE - 2, .y = TILE - 2},
+		.filter = 0,
+		.skip = 0,
+		.color_aux = 0
+	});
+}
+
+void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *))
+{
 	t_obj		*object;
 	t_point		iter;
 
+	if (!vars || !tile_action)
+		return ;
 	object = vars->obj;
 	iter.y = -1;
 	while (++iter.y < object->matrix_len)
@@ -226,25 +191,20 @@ void	design_object(t_tetr *vars)
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
-				this_tile = &vars->tiles[object->start_index.y + iter.y][object->start_index.x + iter.x];
-				this_tile->color = object->color;
-				paint_tile(this_tile, &vars->background_img);
+				tile_action(vars, &vars->tiles[object->start_index.y + iter.y][object->start_index.x + iter.x]);
 			}
 		}
 	}
 }
 
-void	render_map(t_tetr *vars, t_obj *datas)
+void	start_object(t_tetr *vars, t_obj *datas)
 {
-	int	start_index;
-
-	if (!datas)
+	if (!vars || !datas)
 		return ;
 	vars->obj = datas;
 	vars->obj->start_index.y = 0;
 	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len) / 2);
-	rotate_object(vars->obj);
-	design_object(vars);
+	render_object(vars, paint_object_tile);
 }
 
 int	main(void)
@@ -254,8 +214,11 @@ int	main(void)
 	init_tetr(&tetr);
 	// prompt_user(&tetr);
 	setup_game(&tetr);
-	render_map(&tetr, get_object_data(BLOCK));
+	start_object(&tetr, get_object_data(STICK));
 	my_mlx_hooks(&tetr);
 	mlx_loop(tetr.mlx);
 	return (0);
 }
+
+
+//inc, rest, rest, rest

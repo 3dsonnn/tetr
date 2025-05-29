@@ -46,6 +46,15 @@
 void		init_tetr(t_tetr *tetr);
 void	    setup_tiles(t_tetr *tetr, t_tile ***tiles);
 
+//OBJECTS
+
+void	rotate_object(t_obj *obj);
+
+void	erase_object_tile(t_tetr *vars, t_tile *this_tile);
+
+void	paint_object_tile(t_tetr *tetr, t_tile *this_tile);
+
+void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *));
 
 // DEALLOCATE_TETR
 void		deallocate_tetr(t_tetr *tetr, char *message, int status);

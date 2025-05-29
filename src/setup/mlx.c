@@ -20,7 +20,7 @@ static void	get_background_img(t_tetr *tetr, t_img *img)
 	index = rand() % 5;
 	if (open((char *)paths[index], O_RDONLY) < 0)
 		deallocate_tetr(tetr, strerror(errno), 1);
-	img->img = mlx_xpm_file_to_image(tetr->mlx, (char *)paths[index], &img->size.x, &img->size.y);
+	img->img = mlx_xpm_file_to_image(tetr->mlx, (char *)paths[0], &img->size.x, &img->size.y);
 	if (!img->img)
 		deallocate_tetr(tetr,
 			"Failed to convert the .xpm file into an image. Make sure the assets weren't modified, and then you can try again, please!", 1);
@@ -46,5 +46,16 @@ void	setup_mlx(t_tetr *tetr)
 	my_mlx_get_data_addr(&tetr->main_img);
 	if (!tetr->main_img.addr)
 		deallocate_tetr(tetr, "Failed to get the address of the main image.", 1);
+	my_mlx_put_img_to_img((t_img_to_img){
+		.dst = &tetr->main_img,
+		.src = tetr->background_img,
+		.aux = NULL,
+		.dst_point = (t_point){.x = 0, .y = 0},
+		.src_point = (t_point){.x = 0, .y = 0},
+		.size = (t_point){.x = WIDTH, .y = HEIGHT},
+		.filter = 0,
+		.skip = 0,
+		.color_aux = 0
+	});
     mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->background_img.img, 0, 0);
 }
