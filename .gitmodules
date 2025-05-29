@@ -1,0 +1,3 @@
+[submodule "Super-Libft"]
+	path = Super-Libft
+	url = git@github.com:3dsonnn/Super-Libft.git
