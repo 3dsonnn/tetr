@@ -6,25 +6,37 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:33:45 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 13:43:18 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:22:43 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tetr.h"
 
-void    fill_next_box(t_tetr *tetr, t_img *main_img, t_plane size)
+void    fill_next_box(t_tetr *tetr, t_plane size)
 {
-    int     iter;
-    int     vertical_step;
-    int     base_y0;
+    int     i;
+    int     step_y;
+    int     start_y;
 
-    iter = -1;
-    base_y0 = size.y0;
-    vertical_step = (TILE * 2) + (TILE / 2);
-    while (++iter < 5)
+    i = -1;
+    start_y = size.y0;
+    step_y = (TILE * 2) + (TILE / 2);
+    while (++i < 5)
     {
-        size.y0 = base_y0 + vertical_step * iter;
-        size.y = size.y0 + vertical_step;
-        put_piece(get_random_piece(), size, main_img);
+        size.y0 = start_y + step_y * i;
+        size.y = size.y0 + step_y;
+        put_piece(tetr->next_stack[i], size, &tetr->main_img);
     }
+}
+
+void    move_next_box(t_tetr *tetr)
+{
+    int i;
+
+    i = -1;
+    clean_box(tetr, &tetr->main_img, tetr->background_img, tetr->next_box_size);
+    while (++i < 4)
+        tetr->next_stack[i] = tetr->next_stack[i + 1];
+    tetr->next_stack[i] = get_random_piece();
+    fill_next_box(tetr, tetr->next_box_size);
 }
