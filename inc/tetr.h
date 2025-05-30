@@ -6,14 +6,14 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 15:15:35 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:21:52 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TETR_H
 # define TETR_H
 
-# include "../my_mlx/inc/my_mlx.h"
+# include "libft.h"
 # include "tetr_structs.h"
 # include <errno.h>
 # include <string.h>
@@ -60,7 +60,7 @@ void    design_tiles_divisions(t_img *background, t_tile **tiles);
 void	design_border(t_img *main_img, t_tile **tiles);
 void    design_imbroglio_bar(t_img *main_img, t_tile **tiles, t_plane *imbroglio_bar);
 void	design_hold_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size);
-void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size, t_point start);
+void	design_next_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_point start);
 void	design_time_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_plane hold_box_size);
 
 // PIECES
@@ -81,7 +81,7 @@ void    l_mirrored(t_point start, t_tile *tile, t_img *img);
 void    update_scenario(t_tetr *tetr);
 
 // BOXES
-void    clean_box(t_tetr *tetr, t_img *main_img, t_img background_img, t_plane size);
+void    clean_box(t_img *main_img, t_img background_img, t_plane size);
     //  NEXT
 void    fill_next_box(t_tetr *tetr, t_plane size);
 void    move_next_box(t_tetr *tetr);

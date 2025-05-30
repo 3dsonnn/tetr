@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:34:44 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 17:11:31 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:22:01 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	hold_piece(t_tetr *tetr, int flag)
         first_time_holding(tetr, &holded_piece);
     else if (flag)
     {
-        clean_box(tetr, &tetr->main_img, tetr->background_img, tetr->hold_box_size);
+        clean_box(&tetr->main_img, tetr->background_img, tetr->hold_box_size);
         put_piece(holded_piece, tetr->hold_box_size, &tetr->main_img);
         tetr->hold_toggle = 1;
     }
@@ -40,7 +40,7 @@ void	hold_piece(t_tetr *tetr, int flag)
         tmp = holded_piece;
         holded_piece = tetr->cur;
         holded_piece.color = GRAY;
-        clean_box(tetr, &tetr->main_img, tetr->background_img, tetr->hold_box_size);
+        clean_box(&tetr->main_img, tetr->background_img, tetr->hold_box_size);
         put_piece(holded_piece, tetr->hold_box_size, &tetr->main_img);
         holded_piece.color = tetr->cur.color;
         tetr->cur = tmp;

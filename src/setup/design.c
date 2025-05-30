@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:53:48 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 15:24:14 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:19:45 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,8 @@ void	design_hold_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *siz
     mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "HOLD");
 }
 
-void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size, t_point start)
+void	design_next_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_point start)
 {
-    t_tile  *last_on_line;
     int     line_thickness;
 
     line_thickness = 3;
@@ -104,7 +103,6 @@ void	design_next_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *siz
     size->x = size->x0 + (TILE * 5);
     size->y0 = start.y + TILE;
     size->y = size->y0 + (TILE * 13);
-    last_on_line = &tiles[0][TOTAL_TILE_X - 1];
 	my_mlx_draw_line_to_img(main_img,
         (t_point){start.x, start.y},
         (t_point){(TILE * 5), TILE}, WHITE);

@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:58:58 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 15:05:17 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:10:06 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define TETR_STRUCTS_H
 
 # include "tetr.h"
+# include "my_mlx.h"
 
 # define GRAY 0xA9A9A9
 

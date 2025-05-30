@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:33:45 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/28 11:22:43 by efinda           ###   ########.fr       */
+/*   Updated: 2025/05/30 09:22:06 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void    move_next_box(t_tetr *tetr)
     int i;
 
     i = -1;
-    clean_box(tetr, &tetr->main_img, tetr->background_img, tetr->next_box_size);
+    clean_box(&tetr->main_img, tetr->background_img, tetr->next_box_size);
     while (++i < 4)
         tetr->next_stack[i] = tetr->next_stack[i + 1];
     tetr->next_stack[i] = get_random_piece();
