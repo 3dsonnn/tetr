@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:16 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/30 09:21:15 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 09:59:08 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	setup_game(t_tetr *tetr)
 	i = -1;
 	setup_mlx(tetr);
 	setup_tiles(tetr, &tetr->tiles);
-	setup_design(tetr, &tetr->main_img);
+	setup_design(tetr, &tetr->img);
 	tetr->cur = get_random_piece();
 	while (++i < 5)
 		tetr->next_stack[i] = get_random_piece();

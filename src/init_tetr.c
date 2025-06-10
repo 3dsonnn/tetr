@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:09:47 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 15:05:21 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 09:58:56 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void    init_tetr(t_tetr *tetr)
     i = -1;
     tetr->mlx = NULL;
     tetr->win = NULL;
-    my_mlx_init_img(&tetr->main_img);
-    my_mlx_init_img(&tetr->background_img);
+    my_mlx_init_img(&tetr->img);
+    my_mlx_init_img(&tetr->texture);
     tetr->hold_box_size = (t_plane){0, 0, 0, 0};
     tetr->next_box_size = (t_plane){0, 0, 0, 0};
     tetr->time_box_size = (t_plane){0, 0, 0, 0};

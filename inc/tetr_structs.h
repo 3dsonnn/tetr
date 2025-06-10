@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:58:58 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/30 09:10:06 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 09:53:57 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # include "tetr.h"
 # include "my_mlx.h"
+
+# define TEXTURES 13
 
 # define GRAY 0xA9A9A9
 
@@ -28,11 +30,19 @@
 # define MAGENTA_ANSI "\x1b[35m"
 
 # define SKY "assets/sky.xpm"
+# define EYES "assets/eyes.xpm"
 # define HOME "assets/home.xpm"
+# define LAPIS "assets/lapis.xpm"
 # define JPINA "assets/jpina.xpm"
 # define OCEAN "assets/ocean.xpm"
+# define SPINEL "assets/spinel.xpm"
 # define BONFIRE "assets/bonfire.xpm"
 # define CLUSTER "assets/cluster.xpm"
+
+# define AMETHYST "assets/amethyst.xpm"
+# define GARNET "assets/garnet.xpm"
+# define MOON "assets/moon.xpm"
+# define BEACH "assets/beach.xpm"
 
 typedef struct s_plane
 {
@@ -78,8 +88,8 @@ typedef struct s_tetr
 {
 	void				*mlx;
 	void				*win;
-	t_img				main_img;
-	t_img				background_img;
+	t_img				img;
+	t_img				texture;
 	t_tile				**tiles;
 	t_plane				hold_box_size;
 	t_piece				cur;
