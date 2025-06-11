@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:07:33 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/25 18:02:57 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 11:17:56 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,23 @@ void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
 	}
 }
 
+int		get_greatest(t_point point)
+{
+	if (point.x > point.y)
+		return (point.x);
+	return (point.y);
+}
+
 t_obj	*get_object_data(t_obj_type type)
 {
 	static t_obj		objs_data[7] = {
-			{.type = BLOCK, .color = 0xFFD700, .matrix_len = 2},
-			{.type = T_OBJ, .color = 0xBA55D3, .matrix_len = 3},
-			{.type = J_OBJ, .color = 0x7B68EE, .matrix_len = 3},
-			{.type = L_OBJ, .color = 0xFF8C00, .matrix_len = 3},
-			{.type = S_OBJ, .color = 0x9ACD32, .matrix_len = 3},
-			{.type = Z_OBJ, .color = 0xFF4500, .matrix_len = 3},
-			{.type = STICK, .color = 0xADD8E6, .matrix_len = 4},
+			{.type = BLOCK, .color = 0xFFD700, .matrix_len = (t_point){2, 2}},
+			{.type = T_OBJ, .color = 0xBA55D3, .matrix_len = (t_point){3, 2}},
+			{.type = J_OBJ, .color = 0x7B68EE, .matrix_len = (t_point){3, 2}},
+			{.type = L_OBJ, .color = 0xFF8C00, .matrix_len = (t_point){3, 2}},
+			{.type = S_OBJ, .color = 0x9ACD32, .matrix_len = (t_point){3, 2}},
+			{.type = Z_OBJ, .color = 0xFF4500, .matrix_len = (t_point){3, 2}},
+			{.type = STICK, .color = 0xADD8E6, .matrix_len = (t_point){4, 1}},
 	};
 	static char const	block[4][4] = {
 						{'1', '1', '0', '0'},
@@ -96,8 +103,8 @@ t_obj	*get_object_data(t_obj_type type)
 						{'0', '0', '0', '0'}
 	};
 	static char const	stick[4][4] = {
-						{'0', '0', '0', '0'},
 						{'1', '1', '1', '1'},
+						{'0', '0', '0', '0'},
 						{'0', '0', '0', '0'},
 						{'0', '0', '0', '0'}
 	};
@@ -110,45 +117,85 @@ t_obj	*get_object_data(t_obj_type type)
 		if (type == objs_data[i].type)
 		{
 			objs_data[i].x_start_padding = 0;
-			copy_matrix(forms[objs_data[i].type], objs_data[i].matrix_len, objs_data[i].design);
+			copy_matrix(forms[objs_data[i].type], get_greatest(objs_data[i].matrix_len), objs_data[i].design);
 			return (&objs_data[i]);
 		}
 	}
 	return (NULL);
 }
 
-void	rotate_object(t_obj *obj)
+//Depois de rotacionar swapar os x e y de matrix_len, incrementar x/2 em start_index e por aí
+void	shift_left(t_obj *obj, int x_start, int limit)
 {
-	char		old_form[4][4];
-	int			reverse_index;
+	static char	mult = -1;
 	t_point		iter;
+	int			shift;
+	int			tmp;
 
-	if (obj->type == BLOCK)
-		return ;
-	copy_matrix(obj->design, obj->matrix_len, old_form);
-	iter.y = -1;
-	obj->x_start_padding = TOTAL_TILE_X;
-	while (++iter.y < obj->matrix_len)
+	if (x_start > 0)
 	{
-		iter.x = -1;
-		while (++iter.x < obj->matrix_len)
+		shift = x_start;
+		iter.y = -1;
+		while (++iter.y < limit)
 		{
-			reverse_index = obj->matrix_len - iter.y - 1;
-			obj->design[iter.x][reverse_index] = old_form[iter.y][iter.x];
-			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->x_start_padding)
-				obj->x_start_padding = reverse_index;
+			iter.x = -1;
+			// Desloca cada linha para a esquerda
+			while (++iter.x < limit - shift)
+				obj->design[iter.y][iter.x] = obj->design[iter.y][iter.x + shift];
+			// Preenche as colunas à direita com '0'
+			while (iter.x < limit)
+			{
+				obj->design[iter.y][iter.x] = '0';
+				iter.x++;
+			}
 		}
 	}
-	printf("padding: %d\n", obj->x_start_padding);
-	for (int i = 0; i < obj->matrix_len; i++)
+	tmp = obj->matrix_len.x;
+	obj->matrix_len.x = obj->matrix_len.y;
+	obj->matrix_len.y = tmp;
+
+	mult *= -1;
+	obj->start_index.x += (limit / 2) * mult;
+	if (obj->start_index.x < 0)
+		obj->start_index.x = 0;
+	x_start = 0; // Após alinhamento, padding é 0
+	for (int i = 0; i < limit; i++)
 	{
-		for (int j = 0; j < obj->matrix_len; j++)
+		for (int j = 0; j < limit; j++)
 		{
 			write(1, &obj->design[i][j], 1);
 			write(1, " ", 1);
 		}
 		write(1, "\n", 1);
 	}
+}
+
+void	rotate_object(t_obj *obj)
+{
+	char		old_form[4][4];
+	int		reverse_index;
+	int		limit;
+	int		x_start;
+	t_point		iter;
+
+	if (obj->type == BLOCK)
+		return ;
+	limit = get_greatest(obj->matrix_len);
+	copy_matrix(obj->design, limit, old_form);
+	iter.y = -1;
+	x_start = TOTAL_TILE_X;
+	while (++iter.y < limit)
+	{
+		iter.x = -1;
+		while (++iter.x < limit)
+		{
+			reverse_index = limit - iter.y - 1;
+			obj->design[iter.x][reverse_index] = old_form[iter.y][iter.x];
+			if (old_form[iter.y][iter.x] == '1' && reverse_index < x_start)
+				x_start = reverse_index;
+		}
+	}
+	shift_left(obj, x_start, limit);
 }
 
 void	paint_object_tile(t_tetr *tetr, t_tile *this_tile)
@@ -184,10 +231,10 @@ void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *))
 		return ;
 	object = vars->obj;
 	iter.y = -1;
-	while (++iter.y < object->matrix_len)
+	while (++iter.y < object->matrix_len.y)
 	{
 		iter.x = -1;
-		while (++iter.x < object->matrix_len)
+		while (++iter.x < object->matrix_len.x)
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
@@ -203,7 +250,7 @@ void	start_object(t_tetr *vars, t_obj *datas)
 		return ;
 	vars->obj = datas;
 	vars->obj->start_index.y = 0;
-	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len) / 2);
+	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len.x) / 2);
 	render_object(vars, paint_object_tile);
 }
 
@@ -214,7 +261,7 @@ int	main(void)
 	init_tetr(&tetr);
 	// prompt_user(&tetr);
 	setup_game(&tetr);
-	start_object(&tetr, get_object_data(STICK));
+	start_object(&tetr, get_object_data(T_OBJ));
 	my_mlx_hooks(&tetr);
 	mlx_loop(tetr.mlx);
 	return (0);

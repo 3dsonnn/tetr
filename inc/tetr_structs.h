@@ -54,12 +54,12 @@ typedef struct s_tile
 
 typedef struct	s_obj
 {
-	char			design[4][4];
+	char		design[4][4];
 	unsigned int	color;
-	unsigned int	matrix_len;
-	t_point			start_index;
-	int				x_start_padding;
-	t_obj_type		type;
+	t_point		matrix_len;
+	t_point		start_index;
+	int		x_start_padding;
+	t_obj_type	type;
 }	t_obj;
 
 typedef struct s_player
