@@ -54,7 +54,7 @@ typedef struct s_tile
 
 typedef struct	s_obj
 {
-	char			design[4][4];
+	char		design[4][4];
 	unsigned int	color;
 	t_obj_type		type;
 	t_point			matrix_len;

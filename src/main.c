@@ -55,6 +55,13 @@ void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
 	}
 }
 
+int		get_greatest(t_point point)
+{
+	if (point.x > point.y)
+		return (point.x);
+	return (point.y);
+}
+
 t_obj	*get_object_data(t_obj_type type)
 {
 	static t_obj		objs_data[7] = {
@@ -103,8 +110,8 @@ t_obj	*get_object_data(t_obj_type type)
 						{'0', '0', '0', '0'}
 	};
 	static char const	stick[4][4] = {
-						{'0', '0', '0', '0'},
 						{'1', '1', '1', '1'},
+						{'0', '0', '0', '0'},
 						{'0', '0', '0', '0'},
 						{'0', '0', '0', '0'}
 	};
@@ -124,7 +131,8 @@ t_obj	*get_object_data(t_obj_type type)
 	return (NULL);
 }
 
-void	rotate_object(t_obj *obj)
+//Depois de rotacionar swapar os x e y de matrix_len, incrementar x/2 em start_index e por aí
+void	shift_left(t_obj *obj, int x_start, int limit)
 {
 	char		old_form[4][4];
 	static char	height_fixer;
@@ -133,6 +141,8 @@ void	rotate_object(t_obj *obj)
 	int			tmp;
 	t_point		new_start;
 	t_point		iter;
+	int			shift;
+	int			tmp;
 
 	if (obj->type == BLOCK)
 		return ;
@@ -194,6 +204,34 @@ void	rotate_object(t_obj *obj)
 		}
 		write(1, "\n", 1);
 	}
+}
+
+void	rotate_object(t_obj *obj)
+{
+	char		old_form[4][4];
+	int		reverse_index;
+	int		limit;
+	int		x_start;
+	t_point		iter;
+
+	if (obj->type == BLOCK)
+		return ;
+	limit = get_greatest(obj->matrix_len);
+	copy_matrix(obj->design, limit, old_form);
+	iter.y = -1;
+	x_start = TOTAL_TILE_X;
+	while (++iter.y < limit)
+	{
+		iter.x = -1;
+		while (++iter.x < limit)
+		{
+			reverse_index = limit - iter.y - 1;
+			obj->design[iter.x][reverse_index] = old_form[iter.y][iter.x];
+			if (old_form[iter.y][iter.x] == '1' && reverse_index < x_start)
+				x_start = reverse_index;
+		}
+	}
+	shift_left(obj, x_start, limit);
 }
 
 void	paint_object_tile(t_tetr *tetr, t_tile *this_tile)
@@ -261,7 +299,7 @@ int	main(void)
 	init_tetr(&tetr);
 	// prompt_user(&tetr);
 	setup_game(&tetr);
-	start_object(&tetr, get_object_data(STICK));
+	start_object(&tetr, get_object_data(T_OBJ));
 	my_mlx_hooks(&tetr);
 	mlx_loop(tetr.mlx);
 	return (0);
