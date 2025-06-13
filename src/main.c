@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:07:33 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/25 18:02:57 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 11:17:56 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ int	ft_destroy_window(t_tetr *vars)
 	exit(0);
 }
 
+int	get_greatest(t_point point)
+{
+	if (point.x > point.y)
+		return (point.x);
+	return (point.y);
+}
+
 void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
 {
 	t_point	iter;
@@ -51,13 +58,13 @@ void	copy_matrix(const char (*src)[4], int src_size, char (*dst)[4])
 t_obj	*get_object_data(t_obj_type type)
 {
 	static t_obj		objs_data[7] = {
-			{.type = BLOCK, .color = 0xFFD700, .matrix_len = 2},
-			{.type = T_OBJ, .color = 0xBA55D3, .matrix_len = 3},
-			{.type = J_OBJ, .color = 0x7B68EE, .matrix_len = 3},
-			{.type = L_OBJ, .color = 0xFF8C00, .matrix_len = 3},
-			{.type = S_OBJ, .color = 0x9ACD32, .matrix_len = 3},
-			{.type = Z_OBJ, .color = 0xFF4500, .matrix_len = 3},
-			{.type = STICK, .color = 0xADD8E6, .matrix_len = 4},
+			{.type = BLOCK, .color = 0xFFD700, .matrix_len = (t_point){2, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = T_OBJ, .color = 0xBA55D3, .matrix_len = (t_point){3, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = J_OBJ, .color = 0x7B68EE, .matrix_len = (t_point){3, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = L_OBJ, .color = 0xFF8C00, .matrix_len = (t_point){3, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = S_OBJ, .color = 0x9ACD32, .matrix_len = (t_point){3, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = Z_OBJ, .color = 0xFF4500, .matrix_len = (t_point){3, 2}, .matrix_start = (t_point){0, 0}},
+			{.type = STICK, .color = 0xADD8E6, .matrix_len = (t_point){4, 1}, .matrix_start = (t_point){0, 1}},
 	};
 	static char const	block[4][4] = {
 						{'1', '1', '0', '0'},
@@ -109,8 +116,8 @@ t_obj	*get_object_data(t_obj_type type)
 	{
 		if (type == objs_data[i].type)
 		{
-			objs_data[i].x_start_padding = 0;
-			copy_matrix(forms[objs_data[i].type], objs_data[i].matrix_len, objs_data[i].design);
+			objs_data[i].compensation = 0;
+			copy_matrix(forms[objs_data[i].type], get_greatest(objs_data[i].matrix_len), objs_data[i].design);
 			return (&objs_data[i]);
 		}
 	}
@@ -120,29 +127,60 @@ t_obj	*get_object_data(t_obj_type type)
 void	rotate_object(t_obj *obj)
 {
 	char		old_form[4][4];
+	static char	height_fixer;
+	int			limit;
 	int			reverse_index;
+	int			tmp;
+	t_point		new_start;
 	t_point		iter;
 
 	if (obj->type == BLOCK)
 		return ;
-	copy_matrix(obj->design, obj->matrix_len, old_form);
+	limit = get_greatest(obj->matrix_len);
+	copy_matrix(obj->design, limit, old_form);
 	iter.y = -1;
-	obj->x_start_padding = TOTAL_TILE_X;
-	while (++iter.y < obj->matrix_len)
+	obj->matrix_start.x = TOTAL_TILE_X;
+	obj->matrix_start.y = TOTAL_TILE_Y;
+	while (++iter.y < limit)
 	{
 		iter.x = -1;
-		while (++iter.x < obj->matrix_len)
+		while (++iter.x < limit)
 		{
-			reverse_index = obj->matrix_len - iter.y - 1;
+			reverse_index = limit - iter.y - 1;
 			obj->design[iter.x][reverse_index] = old_form[iter.y][iter.x];
-			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->x_start_padding)
-				obj->x_start_padding = reverse_index;
+
+			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->matrix_start.x)
+				obj->matrix_start.x = reverse_index;
+
+			if (old_form[iter.y][iter.x] == '1' && iter.x < obj->matrix_start.y)
+				obj->matrix_start.y = iter.x;
 		}
 	}
-	printf("padding: %d\n", obj->x_start_padding);
-	for (int i = 0; i < obj->matrix_len; i++)
+	/*tmp = obj->matrix_len.x;
+	obj->matrix_len.x = obj->matrix_len.y;
+	obj->matrix_len.y = tmp;
+
+	new_start.x = ((TOTAL_TILE_X - obj->matrix_len.x) / 2) + (obj->matrix_len.x % 2);
+	new_start.x += obj->compensation + obj->matrix_start.x;
+
+	if (new_start.x < 0)
+		new_start.x = 0;
+	else if (new_start.x + obj->matrix_len.x > TOTAL_TILE_X)
+		new_start.x = TOTAL_TILE_X - obj->matrix_len.x;
+
+	obj->start_index.x = new_start.x;
+	if (!obj->matrix_start.x && obj->matrix_start.y)
 	{
-		for (int j = 0; j < obj->matrix_len; j++)
+		obj->start_index.y += obj->matrix_start.y;
+		height_fixer = obj->matrix_start.y;
+	}
+	else if (obj->start_index.y - height_fixer >= 0)
+		obj->start_index.y -= height_fixer;
+	*/
+	printf("paddingx: %d, paddingy: %d\n", obj->matrix_start.x, obj->matrix_start.y);
+	for (int i = 0; i < limit; i++)
+	{
+		for (int j = 0; j < limit; j++)
 		{
 			write(1, &obj->design[i][j], 1);
 			write(1, " ", 1);
@@ -183,15 +221,15 @@ void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *))
 	if (!vars || !tile_action)
 		return ;
 	object = vars->obj;
-	iter.y = -1;
-	while (++iter.y < object->matrix_len)
+	iter.y = object->matrix_start.y - 1;
+	while (++iter.y < get_greatest(object->matrix_len))
 	{
-		iter.x = -1;
-		while (++iter.x < object->matrix_len)
+		iter.x = object->matrix_start.x - 1;
+		while (++iter.x < get_greatest(object->matrix_len))
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
-				tile_action(vars, &vars->tiles[object->start_index.y + iter.y][object->start_index.x + iter.x]);
+				tile_action(vars, &vars->tiles[object->start_index.y + iter.y - object->matrix_start.y][object->start_index.x + iter.x - object->matrix_start.x]);
 			}
 		}
 	}
@@ -203,7 +241,7 @@ void	start_object(t_tetr *vars, t_obj *datas)
 		return ;
 	vars->obj = datas;
 	vars->obj->start_index.y = 0;
-	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len) / 2);
+	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len.x) / 2) + (datas->matrix_len.x % 2);
 	render_object(vars, paint_object_tile);
 }
 

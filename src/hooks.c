@@ -34,18 +34,24 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 	}
 	else if (keycode == LEFT)
 	{
-		write(1, "LEFT\n", 5);
 		render_object(tetr, erase_object_tile);
 		if (object->start_index.x)
+		{
 			object->start_index.x--;
+			object->compensation--;
+		}
+		ft_printf("LEFT: %d\n", object->start_index.x);
 		render_object(tetr, paint_object_tile);
 	}
 	else if (keycode == RIGHT)
 	{
-		write(1, "RIGHT\n", 6);
 		render_object(tetr, erase_object_tile);
-		if (object->start_index.x + object->matrix_len < TOTAL_TILE_X)
+		if (object->start_index.x + object->matrix_len.x < TOTAL_TILE_X)
+		{
 			object->start_index.x++;
+			object->compensation++;			
+		}
+		ft_printf("RIGHT: %d\n", object->start_index.x);
 		render_object(tetr, paint_object_tile);
 	}
 	mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->background_img.img, 0, 0);
