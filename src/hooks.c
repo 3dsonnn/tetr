@@ -21,11 +21,13 @@ static int	my_mlx_close(t_tetr *tetr)
 static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 {
 	t_obj		*object;
-	static char	checker;
+	t_point		matrix_end;
 
 	if (keycode == ESC)
         deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
 	object = tetr->obj;
+	matrix_end.x = object->matrix_start.x + object->matrix_len.x - 1;
+	matrix_end.y = object->matrix_start.y + object->matrix_len.y - 1;
 	if (keycode == UP)
 	{
 		write(1, "UP\n", 3);
@@ -34,6 +36,11 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		//Se o objecto está na parede esquerda e a sua rotação poderá faze-lo ir alem da parede
 		if (!object->start_index.x && object->iterator.x)
 			object->iterator.x = 0;
+		else if (object->start_index.x + get_greatest(object->matrix_len) >= TOTAL_TILE_X)
+		{
+			object->start_index.x -= object->reverse.x;
+			object->reverse.x = 0;
+		}
 		render_object(tetr, paint_object_tile);
 	}
 	else if (keycode == LEFT)
@@ -42,9 +49,11 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		//Se ainda pode ser decrementado
 		if (object->start_index.x)
 		{
+			if (object->reverse.x)
+				object->reverse.x--;
 			object->start_index.x--;
 		}
-		//Se o range do objecto esta na parede esquerda mais a sua forma fisica ainda não tocou
+		//Se o range do objecto esta na parede esquerda mas a sua forma fisica ainda não tocou
 		else if (object->matrix_start.x && (object->matrix_start.x - object->iterator.x))
 		{
 			object->iterator.x++;
@@ -55,7 +64,7 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 	else if (keycode == RIGHT)
 	{
 		render_object(tetr, erase_object_tile);
-		//Verifica se o há colunas vazias dentro da matriz e se o iterador do objecto é diferente de zero
+		//Verifica se o há colunas vazias dentro da matriz e se o iterador do objecto é diferente de zero, caso para quando o objecto estiver do lado esquerdo
 		if (object->matrix_start.x && object->iterator.x) //ERRO ESTÁ AQUI!!!!!!!!!!!!!!!!!!!!!!!!
 		{
 			object->iterator.x--;
@@ -65,12 +74,12 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		{
 			object->start_index.x++;
 		}
-		//Se o range do objecto esta na parede direita mais a sua forma fisica ainda não tocou
-		/*else if ((object->matrix_end.x + object->iterator.x) < get_greatest(object->matrix_len))
+		//Se o range do objecto esta na parede direita mas a sua forma fisica ainda não tocou
+		else if (matrix_end.x + 1 + object->reverse.x < get_greatest(object->matrix_len))
 		{
-			object->iterator.x++;
-			checker = 1;
-		}*/
+			object->start_index.x++;
+			object->reverse.x++;
+		}
 		ft_printf("RIGHT: %d\n", object->start_index.x);
 		render_object(tetr, paint_object_tile);
 	}

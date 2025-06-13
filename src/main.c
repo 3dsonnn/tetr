@@ -117,6 +117,7 @@ t_obj	*get_object_data(t_obj_type type)
 		if (type == objs_data[i].type)
 		{
 			objs_data[i].iterator = (t_point){0, 0};
+			objs_data[i].reverse = (t_point){0, 0};
 			copy_matrix(forms[objs_data[i].type], get_greatest(objs_data[i].matrix_len), objs_data[i].design);
 			return (&objs_data[i]);
 		}
@@ -127,11 +128,9 @@ t_obj	*get_object_data(t_obj_type type)
 void	rotate_object(t_obj *obj)
 {
 	char		old_form[4][4];
-	static char	height_fixer;
 	int			limit;
 	int			reverse_index;
 	int			tmp;
-	t_point		new_start;
 	t_point		iter;
 
 	if (obj->type == BLOCK)
@@ -141,8 +140,8 @@ void	rotate_object(t_obj *obj)
 	iter.y = -1;
 	obj->matrix_start.x = TOTAL_TILE_X;
 	obj->matrix_start.y = TOTAL_TILE_Y;
-	obj->matrix_end.x = -1;
-	obj->matrix_end.y = -1;
+	//obj->matrix_end.x = -1;
+	//obj->matrix_end.y = -1;
 	while (++iter.y < limit)
 	{
 		iter.x = -1;
@@ -153,13 +152,13 @@ void	rotate_object(t_obj *obj)
 
 			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->matrix_start.x)
 				obj->matrix_start.x = reverse_index;
-			if (old_form[iter.y][iter.x] == '1' && reverse_index > obj->matrix_end.x)
-				obj->matrix_end.x = reverse_index;
+			//if (old_form[iter.y][iter.x] == '1' && reverse_index > obj->matrix_end.x)
+			//	obj->matrix_end.x = reverse_index;
 
 			if (old_form[iter.y][iter.x] == '1' && iter.x < obj->matrix_start.y)
 				obj->matrix_start.y = iter.x;
-			if (old_form[iter.y][iter.x] == '1' && iter.x > obj->matrix_end.y)
-				obj->matrix_end.y = iter.x;
+			//if (old_form[iter.y][iter.x] == '1' && iter.x > obj->matrix_end.y)
+			//	obj->matrix_end.y = iter.x;
 		}
 	}
 	tmp = obj->matrix_len.x;
@@ -184,7 +183,7 @@ void	rotate_object(t_obj *obj)
 		obj->start_index.y -= height_fixer;
 	*/
 	printf("startx: %d, starty: %d\n", obj->matrix_start.x, obj->matrix_start.y);
-	printf("endx: %d, endy: %d\n", obj->matrix_end.x, obj->matrix_end.y);
+	//printf("endx: %d, endy: %d\n", obj->matrix_end.x, obj->matrix_end.y);
 	for (int i = 0; i < limit; i++)
 	{
 		for (int j = 0; j < limit; j++)
@@ -224,17 +223,18 @@ void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *))
 {
 	t_obj		*object;
 	t_point		iter;
-	int			limit;
+	t_point		matrix_end;
 
 	if (!vars || !tile_action)
 		return ;
 	object = vars->obj;
-	limit = get_greatest(object->matrix_len);
+	matrix_end.x = object->matrix_start.x + object->matrix_len.x;
+	matrix_end.y = object->matrix_start.y + object->matrix_len.y;
 	iter.y = object->iterator.y - 1;
-	while (++iter.y < limit)
+	while (++iter.y < matrix_end.y)
 	{
 		iter.x = object->iterator.x - 1;
-		while (++iter.x < limit)
+		while (++iter.x < matrix_end.x)
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
@@ -261,7 +261,7 @@ int	main(void)
 	init_tetr(&tetr);
 	// prompt_user(&tetr);
 	setup_game(&tetr);
-	start_object(&tetr, get_object_data(STICK));
+	start_object(&tetr, get_object_data(T_OBJ));
 	my_mlx_hooks(&tetr);
 	mlx_loop(tetr.mlx);
 	return (0);

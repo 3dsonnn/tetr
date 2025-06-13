@@ -59,8 +59,8 @@ typedef struct	s_obj
 	t_obj_type		type;
 	t_point			matrix_len;
 	t_point			matrix_start;
-	t_point			matrix_end;
 	t_point			start_index;
+	t_point			reverse;
 	t_point			iterator;
 }	t_obj;
 
