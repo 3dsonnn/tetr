@@ -56,11 +56,12 @@ typedef struct	s_obj
 {
 	char			design[4][4];
 	unsigned int	color;
-	int				compensation;
+	t_obj_type		type;
 	t_point			matrix_len;
 	t_point			matrix_start;
+	t_point			matrix_end;
 	t_point			start_index;
-	t_obj_type		type;
+	t_point			iterator;
 }	t_obj;
 
 typedef struct s_player

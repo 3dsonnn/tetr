@@ -116,7 +116,7 @@ t_obj	*get_object_data(t_obj_type type)
 	{
 		if (type == objs_data[i].type)
 		{
-			objs_data[i].compensation = 0;
+			objs_data[i].iterator = (t_point){0, 0};
 			copy_matrix(forms[objs_data[i].type], get_greatest(objs_data[i].matrix_len), objs_data[i].design);
 			return (&objs_data[i]);
 		}
@@ -141,6 +141,8 @@ void	rotate_object(t_obj *obj)
 	iter.y = -1;
 	obj->matrix_start.x = TOTAL_TILE_X;
 	obj->matrix_start.y = TOTAL_TILE_Y;
+	obj->matrix_end.x = -1;
+	obj->matrix_end.y = -1;
 	while (++iter.y < limit)
 	{
 		iter.x = -1;
@@ -151,16 +153,20 @@ void	rotate_object(t_obj *obj)
 
 			if (old_form[iter.y][iter.x] == '1' && reverse_index < obj->matrix_start.x)
 				obj->matrix_start.x = reverse_index;
+			if (old_form[iter.y][iter.x] == '1' && reverse_index > obj->matrix_end.x)
+				obj->matrix_end.x = reverse_index;
 
 			if (old_form[iter.y][iter.x] == '1' && iter.x < obj->matrix_start.y)
 				obj->matrix_start.y = iter.x;
+			if (old_form[iter.y][iter.x] == '1' && iter.x > obj->matrix_end.y)
+				obj->matrix_end.y = iter.x;
 		}
 	}
-	/*tmp = obj->matrix_len.x;
+	tmp = obj->matrix_len.x;
 	obj->matrix_len.x = obj->matrix_len.y;
 	obj->matrix_len.y = tmp;
 
-	new_start.x = ((TOTAL_TILE_X - obj->matrix_len.x) / 2) + (obj->matrix_len.x % 2);
+	/*new_start.x = ((TOTAL_TILE_X - obj->matrix_len.x) / 2) + (obj->matrix_len.x % 2);
 	new_start.x += obj->compensation + obj->matrix_start.x;
 
 	if (new_start.x < 0)
@@ -177,7 +183,8 @@ void	rotate_object(t_obj *obj)
 	else if (obj->start_index.y - height_fixer >= 0)
 		obj->start_index.y -= height_fixer;
 	*/
-	printf("paddingx: %d, paddingy: %d\n", obj->matrix_start.x, obj->matrix_start.y);
+	printf("startx: %d, starty: %d\n", obj->matrix_start.x, obj->matrix_start.y);
+	printf("endx: %d, endy: %d\n", obj->matrix_end.x, obj->matrix_end.y);
 	for (int i = 0; i < limit; i++)
 	{
 		for (int j = 0; j < limit; j++)
@@ -217,19 +224,21 @@ void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *))
 {
 	t_obj		*object;
 	t_point		iter;
+	int			limit;
 
 	if (!vars || !tile_action)
 		return ;
 	object = vars->obj;
-	iter.y = object->matrix_start.y - 1;
-	while (++iter.y < get_greatest(object->matrix_len))
+	limit = get_greatest(object->matrix_len);
+	iter.y = object->iterator.y - 1;
+	while (++iter.y < limit)
 	{
-		iter.x = object->matrix_start.x - 1;
-		while (++iter.x < get_greatest(object->matrix_len))
+		iter.x = object->iterator.x - 1;
+		while (++iter.x < limit)
 		{
 			if (object->design[iter.y][iter.x] == '1')
 			{
-				tile_action(vars, &vars->tiles[object->start_index.y + iter.y - object->matrix_start.y][object->start_index.x + iter.x - object->matrix_start.x]);
+				tile_action(vars, &vars->tiles[object->start_index.y + iter.y - object->iterator.y][object->start_index.x + iter.x - object->iterator.x]);
 			}
 		}
 	}
@@ -241,7 +250,7 @@ void	start_object(t_tetr *vars, t_obj *datas)
 		return ;
 	vars->obj = datas;
 	vars->obj->start_index.y = 0;
-	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len.x) / 2) + (datas->matrix_len.x % 2);
+	vars->obj->start_index.x = ((TOTAL_TILE_X - datas->matrix_len.x) / 2);
 	render_object(vars, paint_object_tile);
 }
 

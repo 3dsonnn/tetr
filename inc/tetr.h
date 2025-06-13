@@ -45,7 +45,7 @@
 // INIT_TETR
 void		init_tetr(t_tetr *tetr);
 void	    setup_tiles(t_tetr *tetr, t_tile ***tiles);
-
+int         get_greatest(t_point point);
 //OBJECTS
 
 void	rotate_object(t_obj *obj);

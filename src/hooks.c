@@ -20,7 +20,8 @@ static int	my_mlx_close(t_tetr *tetr)
 
 static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 {
-	t_obj	*object;
+	t_obj		*object;
+	static char	checker;
 
 	if (keycode == ESC)
         deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
@@ -30,15 +31,23 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		write(1, "UP\n", 3);
 		render_object(tetr, erase_object_tile);
 		rotate_object(object);
+		//Se o objecto está na parede esquerda e a sua rotação poderá faze-lo ir alem da parede
+		if (!object->start_index.x && object->iterator.x)
+			object->iterator.x = 0;
 		render_object(tetr, paint_object_tile);
 	}
 	else if (keycode == LEFT)
 	{
 		render_object(tetr, erase_object_tile);
+		//Se ainda pode ser decrementado
 		if (object->start_index.x)
 		{
 			object->start_index.x--;
-			object->compensation--;
+		}
+		//Se o range do objecto esta na parede esquerda mais a sua forma fisica ainda não tocou
+		else if (object->matrix_start.x && (object->matrix_start.x - object->iterator.x))
+		{
+			object->iterator.x++;
 		}
 		ft_printf("LEFT: %d\n", object->start_index.x);
 		render_object(tetr, paint_object_tile);
@@ -46,11 +55,22 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 	else if (keycode == RIGHT)
 	{
 		render_object(tetr, erase_object_tile);
-		if (object->start_index.x + object->matrix_len.x < TOTAL_TILE_X)
+		//Verifica se o há colunas vazias dentro da matriz e se o iterador do objecto é diferente de zero
+		if (object->matrix_start.x && object->iterator.x) //ERRO ESTÁ AQUI!!!!!!!!!!!!!!!!!!!!!!!!
+		{
+			object->iterator.x--;
+		}
+		//Se o índex de inicio dos tales mais o maior comprimento do objecto for menor que o numero de tiles em x, para evitar que ele vá além da tabela
+		else if (object->start_index.x + get_greatest(object->matrix_len) < TOTAL_TILE_X)
 		{
 			object->start_index.x++;
-			object->compensation++;			
 		}
+		//Se o range do objecto esta na parede direita mais a sua forma fisica ainda não tocou
+		/*else if ((object->matrix_end.x + object->iterator.x) < get_greatest(object->matrix_len))
+		{
+			object->iterator.x++;
+			checker = 1;
+		}*/
 		ft_printf("RIGHT: %d\n", object->start_index.x);
 		render_object(tetr, paint_object_tile);
 	}
