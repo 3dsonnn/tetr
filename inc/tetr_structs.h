@@ -6,17 +6,18 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:58:58 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 09:53:57 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/17 13:40:17 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TETR_STRUCTS_H
 # define TETR_STRUCTS_H
 
-# include "tetr.h"
 # include "my_mlx.h"
+# include "tetr.h"
 
-# define TEXTURES 13
+# define TEXTURES 14
+# define BREAK 800
 
 # define GRAY 0xA9A9A9
 
@@ -35,6 +36,7 @@
 # define LAPIS "assets/lapis.xpm"
 # define JPINA "assets/jpina.xpm"
 # define OCEAN "assets/ocean.xpm"
+# define EFINDA "assets/efinda.xpm"
 # define SPINEL "assets/spinel.xpm"
 # define BONFIRE "assets/bonfire.xpm"
 # define CLUSTER "assets/cluster.xpm"
@@ -44,6 +46,16 @@
 # define MOON "assets/moon.xpm"
 # define BEACH "assets/beach.xpm"
 
+#define SQUARE_COLOR		0xFFFF00
+#define STRAIGHT_COLOR		0x99FFFF
+#define T_SHAPE_COLOR		0xFF00FF
+#define TILTED_S_COLOR		0x99FF33
+#define TILTED_Z_COLOR		0xFF3333
+#define L_SHAPE_COLOR		0xFF9933
+#define L_MIRRORED_COLOR	0x6666FF
+
+typedef	char	Shape[4][4];
+
 typedef struct s_plane
 {
 	int					x0;
@@ -52,26 +64,32 @@ typedef struct s_plane
 	int					y;
 }						t_plane;
 
-typedef enum e_ID
+typedef enum e_type
 {
 	SQUARE,
-	T_SHAPE,
-	L_SHAPE,
-	TILTED_Z,
-	TILTED_S,
 	STRAIGHT,
+	T_SHAPE,
+	TILTED_S,
+	TILTED_Z,
+	L_SHAPE,
 	L_MIRRORED
-}						t_ID;
+}						t_type;
 
 typedef struct s_piece
 {
-	int					id;
-	int					color;
+	Shape				design;
+	unsigned int		color;
+	t_type				type;
+	t_point				mtxlen;
+	t_point				mtxstart;
+	t_point				start_index;
+	t_point				iterator;
+	t_point				reverse;
 }						t_piece;
 
 typedef struct s_tile
 {
-	int					color;
+	unsigned int		color;
 	t_point				crd;
 	struct s_tile		*up;
 	struct s_tile		*down;
@@ -91,16 +109,19 @@ typedef struct s_tetr
 	t_img				img;
 	t_img				texture;
 	t_tile				**tiles;
-	t_plane				hold_box_size;
 	t_piece				cur;
-	t_plane				next_box_size;
+	t_piece				pieces[7];
 	t_piece				next_stack[5];
-	t_plane				imbroglio_bar_size;
-	t_plane				time_box_size;
-	t_player			player;
+	int					lines[20];
+	int					down;
 	int					hold_toggle;
+	t_plane				imbroglio_bar_size;
+	t_plane				hold_box_size;
+	t_plane				next_box_size;
+	t_plane				time_box_size;
 	unsigned long long	start_time;
 	char				*cur_time;
+	t_player			player;
 }						t_tetr;
 
 #endif

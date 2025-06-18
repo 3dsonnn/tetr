@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 15:28:03 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 14:18:55 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/13 20:36:18 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	set_tiles(t_tile **tiles, t_point padd)
 		while (++iter.x < TOTAL_TILE_X)
 		{
 			tmp = &tiles[iter.y][iter.x];
-			tmp->color = BLACK;
 			if (!iter.x && !iter.y)
 				tmp->crd = padd;
 			else if (!iter.x)

@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:13:27 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 10:01:54 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/13 21:19:50 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void    deallocate_tetr(t_tetr *tetr, char *message, int status)
         mlx_destroy_window(tetr->mlx, tetr->win);
     if (tetr->mlx)
     {
+	    mlx_do_key_autorepeaton(tetr->mlx);
         mlx_destroy_display(tetr->mlx);
         free(tetr->mlx);
     }
