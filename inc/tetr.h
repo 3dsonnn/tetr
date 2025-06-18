@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/30 09:21:52 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/17 17:02:37 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,32 +56,46 @@ void		prompt_user(t_tetr *tetr);
 void		setup_game(t_tetr *tetr);
 
 // DESIGN
-void    design_tiles_divisions(t_img *background, t_tile **tiles);
-void	design_border(t_img *main_img, t_tile **tiles);
-void    design_imbroglio_bar(t_img *main_img, t_tile **tiles, t_plane *imbroglio_bar);
-void	design_hold_box(t_tetr *tetr, t_img *main_img, t_tile **tiles, t_plane *size);
-void	design_next_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_point start);
-void	design_time_box(t_tetr *tetr, t_img *main_img, t_plane *size, t_plane hold_box_size);
+void    design_tiles_divisions(t_img *texture, t_tile **tiles);
+void	design_border(t_img *img, t_tile **tiles);
+void    design_imbroglio_bar(t_img *img, t_tile **tiles, t_plane *imbroglio_bar);
+void	design_hold_box(t_tetr *tetr, t_img *img, t_tile **tiles, t_plane *size);
+void	design_next_box(t_tetr *tetr, t_img *img, t_plane *size, t_point start);
+void	design_time_box(t_tetr *tetr, t_img *img, t_plane *size, t_plane hold_box_size);
 
 // PIECES
-t_piece get_random_piece(void);
+t_piece get_random_piece(t_tetr *tetr);
+// INIT
+void    init_piece(t_piece *piece);
+void	init_pieces(t_piece *pieces, int i, t_point empty);
+// ROTATE
+void	rotate_piece(t_tetr *tetr, t_piece *piece);
+// MOVE
+void    move_piece(t_tetr *tetr, int keycode);
+void    fall_piece(t_tetr *tetr);
+// BURN_LINE
+void	burn_lines(t_tetr *tetr);
+// RENDER
+void	clean_piece_tile(t_tetr *tetr, t_tile *tile);
+void	paint_piece_tile(t_tetr *tetr, t_tile *tile);
+int     render_piece(t_tetr	*tetr, char flag, void (*action)(t_tetr *, t_tile *));
 // UPDATED
 void    update_piece(t_tetr *tetr);
 // PUT
 void    put_piece(t_piece ref, t_plane size, t_img *img);
-void    square(t_point start, t_tile *tile, t_img *img);
-void    straight(t_point start, t_tile *tile, t_img *img);
-void    tilted_z(t_point start, t_tile *tile, t_img *img);
-void    tilted_s(t_point start, t_tile *tile, t_img *img);
-void    t_shape(t_point start, t_tile *tile, t_img *img);
-void    l_shape(t_point start, t_tile *tile, t_img *img);
-void    l_mirrored(t_point start, t_tile *tile, t_img *img);
+void    square(t_point start, unsigned int color, t_img *img);
+void    straight(t_point start, unsigned int color, t_img *img);
+void    tilted_z(t_point start, unsigned int color, t_img *img);
+void    tilted_s(t_point start, unsigned int color, t_img *img);
+void    t_shape(t_point start, unsigned int color, t_img *img);
+void    l_shape(t_point start, unsigned int color, t_img *img);
+void    l_mirrored(t_point start, unsigned int color, t_img *img);
 
 // UPDATE_SCENARIO
 void    update_scenario(t_tetr *tetr);
 
 // BOXES
-void    clean_box(t_img *main_img, t_img background_img, t_plane size);
+void    clean_box(t_img *img, t_img texture, t_plane size);
     //  NEXT
 void    fill_next_box(t_tetr *tetr, t_plane size);
 void    move_next_box(t_tetr *tetr);
@@ -97,11 +111,15 @@ void		setup_mlx(t_tetr *tetr);
 void		my_mlx_hooks(t_tetr *tetr);
 
 // TILES
-extern void	swap_tile_attr(t_tile *a, t_tile *z);
-void        paint_tile(t_tile *tile, t_img *img);
 void		free_tiles(t_tile ***tiles, int rows);
 void		link_tiles(t_tile **tiles);
 void		init_tiles(t_tile ***tiles);
 void		set_tiles(t_tile **tiles, t_point padd);
+void        paint_tile(t_tile *tile, t_img *img);
+extern void swap_tile_attr(t_tile *a, t_tile *z);
+
+// UTILS
+void    mtxcpy(const char (*src)[4], char (*dst)[4], int size);
+void	putmtx(Shape mtx, int limit);
 
 #endif

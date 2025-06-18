@@ -6,7 +6,7 @@
 #    By: efinda <efinda@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/23 13:08:10 by efinda            #+#    #+#              #
-#    Updated: 2025/05/30 09:17:41 by efinda           ###   ########.fr        #
+#    Updated: 2025/06/17 17:02:52 by efinda           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,14 +25,19 @@ SRC =	src/main.c						\
 		src/tile/init.c					\
 		src/tile/free.c					\
 		src/tile/link.c					\
-		src/tile/utils.c				\
 		src/tile/paint.c				\
+		src/tile/utils.c				\
 		src/boxes_management/next.c		\
 		src/boxes_management/shared.c	\
 		src/boxes_management/hold.c		\
 		src/boxes_management/time.c		\
-		src/pieces/get_random_piece.c	\
+		src/pieces/init.c				\
+		src/pieces/move.c				\
+		src/pieces/rotate.c				\
+		src/pieces/render.c				\
 		src/pieces/put_piece.c			\
+		src/pieces/burn_lines.c			\
+		src/pieces/get_random_piece.c	\
 		src/pieces/update_piece.c		\
 		src/pieces/put/square.c			\
 		src/pieces/put/l_mirrored.c		\

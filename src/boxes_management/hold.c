@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 20:34:44 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 10:02:18 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:02:31 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	hold_piece(t_tetr *tetr, int flag)
         put_piece(holded_piece, tetr->hold_box_size, &tetr->img);
         holded_piece.color = tetr->cur.color;
         tetr->cur = tmp;
+        tetr->cur.start_index = (t_point){.x = (TOTAL_TILE_X - tetr->cur.mtxlen.x) / 2, .y = 0};
         tetr->hold_toggle = 0;
     }
 }

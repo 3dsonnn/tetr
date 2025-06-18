@@ -6,22 +6,24 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 13:11:50 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 13:34:15 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:34:14 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../inc/tetr.h"
 
-void    square(t_point start, t_tile *tile, t_img *img)
+void    square(t_point start, unsigned int color, t_img *img)
 {
-    tile->crd = start;
-    paint_tile(tile, img);
-    tile->crd.x += TILE;
-    paint_tile(tile, img);
-    tile->crd = (t_point){.x = tile->crd.x - TILE, .y = tile->crd.y + TILE};
-    paint_tile(tile, img);
-    tile->crd.x += TILE;
-    paint_tile(tile, img);
+    t_tile  tile;
+
+    tile = (t_tile){.color = color, .crd = start, .up = NULL, .down = NULL, .right = NULL, .left = NULL};
+    paint_tile(&tile, img);
+    tile.crd.x += TILE;
+    paint_tile(&tile, img);
+    tile.crd = (t_point){.x = tile.crd.x - TILE, .y = tile.crd.y + TILE};
+    paint_tile(&tile, img);
+    tile.crd.x += TILE;
+    paint_tile(&tile, img);
     // Horizontal lines
     my_mlx_draw_line_to_img(img, (t_point){start.x, start.y}, (t_point){TILE * 2, 1}, WHITE);
     my_mlx_draw_line_to_img(img, (t_point){start.x, start.y + TILE}, (t_point){TILE * 2, 1}, WHITE);

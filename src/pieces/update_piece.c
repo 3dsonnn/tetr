@@ -6,16 +6,17 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/28 10:58:36 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/29 16:40:18 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/17 21:10:06 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tetr.h"
 
-void    update_piece(t_tetr *tetr)
+void	update_piece(t_tetr *tetr)
 {
-    if (!tetr->hold_toggle)
-		  hold_piece(tetr, 1);
-    tetr->cur = *tetr->next_stack;
-    move_next_box(tetr);
+	if (!tetr->hold_toggle)
+		hold_piece(tetr, 1);
+	tetr->cur = *tetr->next_stack;
+	move_next_box(tetr);
+	burn_lines(tetr);
 }

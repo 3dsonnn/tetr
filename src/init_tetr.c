@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 12:09:47 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 09:58:56 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/17 14:34:30 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,18 @@ void    init_tetr(t_tetr *tetr)
     tetr->next_box_size = (t_plane){0, 0, 0, 0};
     tetr->time_box_size = (t_plane){0, 0, 0, 0};
     tetr->imbroglio_bar_size = (t_plane){0, 0, 0, 0};
-    tetr->cur = (t_piece){.id = 0, .color = 0};
+    init_piece(&tetr->cur);
+    tetr->down = 0;
     tetr->hold_toggle = -1;
     tetr->start_time = 0;
     tetr->tiles = NULL;
     tetr->cur_time = NULL;
     tetr->player.name = NULL;
-    while (++i < 5)
-        tetr->next_stack[i] = (t_piece){.id = 0, .color = 0};
+    while (++i < TOTAL_TILE_Y)
+    {
+        if (i < 5)
+            init_piece(&tetr->next_stack[i]);
+        tetr->lines[i] = -1;
+    }
+    init_pieces(tetr->pieces, -1, (t_point){0, 0});
 }
