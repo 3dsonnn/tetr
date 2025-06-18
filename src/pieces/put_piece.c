@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/26 21:07:29 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/27 13:42:52 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/14 21:02:33 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,18 @@ static  t_point get_padded_start(t_plane size, t_point lil)
 
 void    put_piece(t_piece ref, t_plane size, t_img *img)
 {
-    t_tile  tile;
-
-    tile = (t_tile){.color = ref.color, .crd = {0, 0},
-        .up = NULL, .down = NULL, .right = NULL, .left = NULL};
-    if (ref.id == SQUARE)
-        square(get_padded_start(size, (t_point){(TILE * 2), (TILE * 2)}), &tile, img);
-    else if (ref.id == L_MIRRORED)
-        l_mirrored(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), &tile, img);
-    else if (ref.id == L_SHAPE)
-        l_shape(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), &tile, img);
-    else if (ref.id == TILTED_Z)
-        tilted_z(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), &tile, img);
-    else if (ref.id == TILTED_S)
-        tilted_s(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), &tile, img);
-    else if (ref.id == STRAIGHT)
-        straight(get_padded_start(size, (t_point){(TILE * 4), TILE}), &tile, img);
-    else if (ref.id == T_SHAPE)
-        t_shape(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), &tile, img);
+    if (ref.type == SQUARE)
+        square(get_padded_start(size, (t_point){(TILE * 2), (TILE * 2)}), ref.color, img);
+    else if (ref.type == L_MIRRORED)
+        l_mirrored(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), ref.color, img);
+    else if (ref.type == L_SHAPE)
+        l_shape(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), ref.color, img);
+    else if (ref.type == TILTED_Z)
+        tilted_z(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), ref.color, img);
+    else if (ref.type == TILTED_S)
+        tilted_s(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), ref.color, img);
+    else if (ref.type == STRAIGHT)
+        straight(get_padded_start(size, (t_point){(TILE * 4), TILE}), ref.color, img);
+    else if (ref.type == T_SHAPE)
+        t_shape(get_padded_start(size, (t_point){(TILE * 3), (TILE * 2)}), ref.color, img);
 }
