@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:13 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 10:32:18 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/14 20:17:26 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	get_texture(t_tetr *tetr, t_img *texture)
 {
 	const char	*paths[] = {SKY, EYES, HOME, JPINA, OCEAN,
 							CLUSTER, SPINEL, LAPIS, AMETHYST,
-							MOON, BEACH, BONFIRE, GARNET};
+							MOON, BEACH, BONFIRE, GARNET, EFINDA};
 	int			index;
 
 	index = rand() % TEXTURES;
@@ -59,4 +59,5 @@ void	setup_mlx(t_tetr *tetr)
 		.color_aux = 0
 	});
     mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->img.img, 0, 0);
+	mlx_do_key_autorepeatoff(tetr->mlx);
 }
