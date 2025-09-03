@@ -20,8 +20,9 @@
 # include <sys/time.h>
 # include <time.h>
 # include <math.h>
+# include <stdbool.h>
 
-# define WIDTH 1920
+# define WIDTH 960
 # define HEIGHT 1010
 
 # define TILE 32
@@ -66,10 +67,9 @@ void	design_time_box(t_tetr *tetr, t_img *img, t_plane *size, t_plane hold_box_s
 // PIECES
 t_piece get_random_piece(t_tetr *tetr);
 // INIT
-void    init_piece(t_piece *piece);
-void	init_pieces(t_piece *pieces, int i, t_point empty);
+void	init_pieces(t_piece *pieces);
 // ROTATE
-void	rotate_piece(t_tetr *tetr, t_piece *piece);
+void	rotate_piece(t_tetr *tetr);
 // MOVE
 void    move_piece(t_tetr *tetr, int keycode);
 void    fall_piece(t_tetr *tetr);
@@ -78,7 +78,7 @@ void	burn_lines(t_tetr *tetr);
 // RENDER
 void	clean_piece_tile(t_tetr *tetr, t_tile *tile);
 void	paint_piece_tile(t_tetr *tetr, t_tile *tile);
-int     render_piece(t_tetr	*tetr, char flag, void (*action)(t_tetr *, t_tile *));
+int	render_piece( t_tetr *tetr, bool renderize );
 // UPDATED
 void    update_piece(t_tetr *tetr);
 // PUT
@@ -115,11 +115,11 @@ void		free_tiles(t_tile ***tiles, int rows);
 void		link_tiles(t_tile **tiles);
 void		init_tiles(t_tile ***tiles);
 void		set_tiles(t_tile **tiles, t_point padd);
-void        paint_tile(t_tile *tile, t_img *img);
-extern void swap_tile_attr(t_tile *a, t_tile *z);
+void		paint_tile(t_tile *tile, t_img *img);
+extern void	swap_tile_attr(t_tile *a, t_tile *z);
 
-// UTILS
-void    mtxcpy(const char (*src)[4], char (*dst)[4], int size);
-void	putmtx(Shape mtx, int limit);
+
+void	get_piece_limits( t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x, t_point *low_y );
+bool	object_will_collide( t_tetr *tetr );
 
 #endif

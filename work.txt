@@ -18,3 +18,78 @@ efinda:
 
 Things to do later:
 	*Implement music*
+
+-------------------------------------------------------------------------------------------------------------------
+T Object:
+
+a = [0, 1]
+b = [1, 0]
+c = [1, 1]
+d = [2, 1]
+
+0 1 2
+_ _ _
+  #   | 0
+# # # | 1
+
+Para rotacionar anti-horário: [x = y, y = -x]
+
+PS: Se um valor de x ou de y for menor que 0, procuramos o menor entre todos deste grupo, e
+adicionamos "esse valor * -1 (para ser positivo)", a todos os outros valores do seu grupo de x ou de y, e
+isso se aplica para ambos.
+
+ex: aqui apenas os valores de y chegaram abaixo de 0, então aplicamos a regra: O menor valor é o -2 e, -2 * -1 igual
+à 2, adicionamos os 2 a todos os valores de y, independentemente se entre eles há valores >= 0, desde que um deles
+seja menor que 0 essa regra se aplica
+
+a = [0, 1] = [1, -0]
+b = [1, 0] = [0, -1]
+c = [1, 1] = [1, -1]
+d = [2, 1] = [1, -2]
+
+menor negativo: -2y, -2y * -1 = 2y
+
+a = [1,  0] + 2y = [1, 2]
+b = [0, -1] + 2y = [0, 1]
+c = [1, -1] + 2y = [1, 1]
+d = [1, -2] + 2y = [1, 0] 
+
+0 1 2
+_ _ _
+  #  | 0
+# #  | 1
+  #  | 2
+  
+-------------------------------------------------------------------------------------------------------------------
+
+T Object:
+
+a = [0, 1]
+b = [1, 0]
+c = [1, 1]
+d = [2, 1]
+
+0 1 2
+_ _ _
+  #   | 0
+# # # | 1
+
+Para rotacionar horário: [x = -y, y = x]
+
+a = [0, 1] = [-1, 0]
+b = [1, 0] = [-0, 1]
+c = [1, 1] = [-1, 1]
+d = [2, 1] = [-1, 2]
+
+menor negativo: -1x, -1x * -1 = x
+
+a = [-1, 0] + x = [0, 0]
+b = [ 0, 1] + x = [1, 1]
+c = [-1, 1] + x = [0, 1]
+d = [-1, 2] + x = [0, 2]
+
+0 1 2
+_ _ _
+#    | 0
+# #  | 1
+#    | 2

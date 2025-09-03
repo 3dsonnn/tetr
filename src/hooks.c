@@ -30,25 +30,26 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 	if (keycode == ESC)
 		deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
 	if (keycode == UP)
-		rotate_piece(tetr, &tetr->cur);
+		rotate_piece(tetr);
 	else if (keycode == DOWN)
 		tetr->down = 1;
 	else if (keycode == LEFT || keycode == RIGHT)
 		move_piece(tetr, keycode);
 	else if ((keycode == CKEY && tetr->hold_toggle) || keycode == AKEY)
 	{
-		render_piece(tetr, 0, clean_piece_tile);
+		render_piece(tetr, false);
 		if (keycode == AKEY)
 			update_piece(tetr);
 		else
 			hold_piece(tetr, 0);
-		render_piece(tetr, 1, paint_piece_tile);
+		render_piece(tetr, true);
 	}
 	return (0);
 }
 
 static int	my_mlx_loop_hook(t_tetr *tetr)
 {
+	(void)tetr;
 	static unsigned long long	last_time;
 	unsigned long long			cur_time;
 
@@ -56,7 +57,7 @@ static int	my_mlx_loop_hook(t_tetr *tetr)
 	if (cur_time - last_time > BREAK
 		|| (tetr->down && (cur_time - last_time > 50)))
 	{
-		fall_piece(tetr);
+		//fall_piece(tetr);
 		last_time = cur_time;
 	}
 	update_time(tetr);

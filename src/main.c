@@ -18,6 +18,7 @@ int	main(int ac, char **av)
 
     (void)ac;
     (void)av;
+
     init_tetr(&tetr);
     // prompt_user(&tetr);
     setup_game(&tetr);
