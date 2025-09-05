@@ -18,3 +18,60 @@ efinda:
 
 Things to do later:
 	*Implement music*
+
+-------------------------------------------------------------------------------------------------------------------
+T Object:
+
+a = [0, 1]
+b = [1, 0]
+c = [1, 1]
+d = [2, 1]
+
+### Vamos aplicar com o **pivô = c = (1,1)**
+
+Peça original:
+
+a = (0,1)
+b = (1,0)
+c = (1,1)   <- pivô
+d = (2,1)
+
+#### 1. Transladar para o pivô (subtrair (1,1)):
+
+a' = (0-1, 1-1) = (-1, 0)
+b' = (1-1, 0-1) = ( 0,-1)
+c' = (1-1, 1-1) = ( 0, 0)
+d' = (2-1, 1-1) = ( 1, 0)
+
+---
+
+#### 2. Rotacionar horário (x,y) → (-y,x):
+
+a'' = ( 0,-1)  = ( 0,-1)
+b'' = ( 1, 0)  = ( 1, 0)
+c'' = ( 0, 0)  = ( 0, 0)
+d'' = ( 0, 1)  = ( 0, 1)
+
+---
+
+#### 3. Transladar de volta (somar (1,1)):
+
+a = (0+1, -1+1) = (1,0)
+b = (1+1,  0+1) = (2,1)
+c = (0+1,  0+1) = (1,1)
+d = (0+1,  1+1) = (1,2)
+
+---
+
+### Resultado final da peça T (rotacionada horário):
+
+0 1 2
+_ _ _
+  #   | 0
+  # # | 1
+  #   | 2
+
+---
+
+Ou seja: usando o pivô, a peça **não salta**, apenas gira no lugar.
+Não há mais correção de negativos porque o pivô “segura” a peça no tabuleiro.

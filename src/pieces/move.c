@@ -12,83 +12,91 @@
 
 #include "tetr.h"
 
-void    move_piece(t_tetr *tetr, int keycode)
+void	get_piece_limits( const t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x,
+	t_point *low_y )
 {
-    t_piece *piece;
-    t_piece	cur;
-    t_point mtxend;
+	t_point	greatest;
+	t_point	lowest;
 
-    piece = &tetr->cur;
-    mtxend = (t_point){.x = piece->mtxstart.x + piece->mtxlen.x - 1,
-        .y = piece->mtxstart.y + piece->mtxlen.y - 1};
-    cur = tetr->cur;
-    render_piece(tetr, 0, clean_piece_tile);
-    if (keycode == LEFT)
-    {
-		//Se ainda pode ser decrementado
-		if (piece->start_index.x)
+	lowest = (t_point){42, 42};
+	greatest = (t_point){-42, -42};
+	for (int i = 0; i < 4; i++)
+	{
+		if (low_x && coords[i].x < lowest.x)
 		{
-			if (piece->reverse.x)
-				piece->reverse.x--;
-			piece->start_index.x--;
+			lowest.x = coords[i].x;
+			*low_x = coords[i];
 		}
-		//Se o range do objecto esta na parede esquerda mas a sua forma fisica ainda não tocou
-		else if (piece->mtxstart.x && (piece->mtxstart.x - piece->iterator.x))
-			piece->iterator.x++;
-    }
-    else
-    {
-        //Verifica se o há colunas vazias dentro da matriz e se o iterador do objecto é diferente de zero, caso para quando o objecto estiver do lado esquerdo
-		if (piece->mtxstart.x && piece->iterator.x) //ERRO ESTÁ AQUI!!!!!!!!!!!!!!!!!!!!!!!!
-			piece->iterator.x--;
-		//Se o índex de inicio dos tales mais o maior comprimento do objecto for menor que o numero de tiles em x, para evitar que ele vá além da tabela
-		else if (piece->start_index.x + ft_max_point(piece->mtxlen) < TOTAL_TILE_X)
-			piece->start_index.x++;
-		//Se o range do objecto esta na parede direita mas a sua forma fisica ainda não tocou
-		else if (mtxend.x + 1 + piece->reverse.x < ft_max_point(piece->mtxlen))
+		if (low_y && coords[i].y < lowest.y)
 		{
-			piece->start_index.x++;
-			piece->reverse.x++;
+			lowest.y = coords[i].y;
+			*low_y = coords[i];
 		}
-    }
-    if (!render_piece(tetr, 1, paint_piece_tile))
-    {
-        tetr->cur = cur;
-        render_piece(tetr, 1, paint_piece_tile);
-    }
+	 	if (great_x && coords[i].x > greatest.x)
+	 	{
+			greatest.x = coords[i].x;
+			*great_x = coords[i];
+		}
+		if (great_y && coords[i].y > greatest.y)
+		{
+			greatest.y = coords[i].y;
+			*great_y = coords[i];
+		}
+	}
 }
 
-void    fall_piece(t_tetr *tetr)
+void    move_piece(t_tetr *tetr, int keycode)
 {
-    t_piece *piece;
-    t_piece cur;
-    int     mtxend_y;
-    int     max_len;
+	t_piece	*piece;
+	t_point	great_x;
+	t_point	low_x;
+	char	step;
 
-    piece = &tetr->cur;
-    cur = *piece;
-    max_len = ft_max_point(piece->mtxlen);
-    mtxend_y = piece->mtxstart.y + piece->mtxlen.y - 1;
-    if (piece->start_index.y + max_len < TOTAL_TILE_Y)
-    {
-        render_piece(tetr, 0, clean_piece_tile);
-        piece->start_index.y++;
-    }
-    else if (mtxend_y + 1 + piece->reverse.y < max_len)
-    {
-        render_piece(tetr, 0, clean_piece_tile);
-        piece->start_index.y++;
-        piece->reverse.y++;
-    }
-    else
-    {
-        update_piece(tetr);
-        cur = tetr->cur;
-    }
-    if (!render_piece(tetr, 1, paint_piece_tile))
-    {
-        tetr->cur = cur;
-        render_piece(tetr, 1, paint_piece_tile);
-        update_piece(tetr);
-    }
+	piece = &tetr->cur;
+	if (keycode == LEFT)
+		step = -1;
+	else
+		step = 1;
+	get_piece_limits( piece->coords, &great_x, NULL, &low_x, NULL );
+	if (step > 0)
+	{
+		if (great_x.x == TOTAL_TILE_X - 1 || tetr->tiles[great_x.y][great_x.x + 1].color)
+			return ;
+	}
+	else
+	{
+		if (low_x.x == 0 || tetr->tiles[low_x.y][low_x.x - 1].color)
+			return ;
+	}
+	render_piece(tetr, false);
+	for (int i = 0; i < 4; i++)
+		piece->coords[i].x += step;
+	render_piece(tetr, true);
+}
+
+
+void	fall_piece(t_tetr *tetr)
+{
+	t_piece	*piece;
+	t_point	great_y;
+
+	piece = &tetr->cur;
+	get_piece_limits( piece->coords, NULL, &great_y, NULL, NULL );
+	if (great_y.y == TOTAL_TILE_Y - 1)
+	{
+		update_piece(tetr);
+		return ;
+	}
+	render_piece(tetr, false);
+	for (int i = 0; i < 4; i++)
+		piece->coords[i].y++;
+	if (object_will_collide( tetr ))
+	{
+		for (int i = 0; i < 4; i++)
+			piece->coords[i].y--;
+		render_piece(tetr, true);
+		update_piece(tetr);
+		return ;
+	}
+	render_piece(tetr, true);
 }

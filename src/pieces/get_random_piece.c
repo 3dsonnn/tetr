@@ -23,7 +23,6 @@ t_piece	get_random_piece(t_tetr *tetr)
 		if (tetr->pieces[index].type == prev.type)
 			continue ;
 		prev = tetr->pieces[index];
-		prev.start_index = (t_point){.x = (TOTAL_TILE_X - prev.mtxlen.x) / 2, .y = 0};
 		break ;
 	}
 	return (prev);

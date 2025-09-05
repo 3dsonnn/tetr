@@ -14,15 +14,29 @@
 
 void    paint_tile(t_tile *tile, t_img *img)
 {
-    t_point iter;
-
-    if (!tile)
-        return ;
-    iter = (t_point){.x = -1, .y = -1};
-    while (++iter.y < TILE)
-    {
-        iter.x = -1;
-        while (++iter.x < TILE)
-            my_mlx_pixel_put(img, tile->crd.x + iter.x, tile->crd.y + iter.y, tile->color);
-    }
+	if (!tile)
+		return ;
+	for (int y = 0; y < TILE; y++)
+	{
+		for (int x = 0; x < TILE; x++)
+			my_mlx_pixel_put(img, tile->crd.x + x, tile->crd.y + y, tile->color);
+	}
 }
+
+
+void	clean_piece_tile(t_tetr *tetr, t_tile *tile)
+{
+	tile->color = 0;
+	my_mlx_put_img_to_img((t_img_to_img){
+		.dst = &tetr->img,
+		.src = tetr->texture,
+		.aux = NULL,
+		.dst_point = (t_point){tile->crd.x, tile->crd.y},
+		.src_point = (t_point){tile->crd.x, tile->crd.y},
+		.size = (t_point){.x = TILE, .y = TILE},
+		.filter = 0,
+		.skip = 0,
+		.color_aux = 0
+	});
+}
+

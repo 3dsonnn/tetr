@@ -12,32 +12,3 @@
 
 #include "../inc/tetr.h"
 
-void	mtxcpy(const char (*src)[4], char (*dst)[4], int size)
-{
-	t_point	iter;
-
-	iter.y = -1;
-	while (++iter.y < size)
-	{
-		iter.x = -1;
-		while (++iter.x < size)
-			dst[iter.y][iter.x] = src[iter.y][iter.x];
-	}
-}
-
-void	putmtx(Shape mtx, int limit)
-{
-	t_point	iter;
-
-	iter.y = -1;
-	while (++iter.y < limit)
-	{
-		iter.x = -1;
-		while (++iter.x < limit)
-		{
-			write(1, &mtx[iter.y][iter.x], 1);
-			write(1, " ", 1);
-		}
-	}
-	write(1, "\n", 1);
-}

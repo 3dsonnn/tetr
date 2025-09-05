@@ -25,26 +25,25 @@ static  void    first_time_holding(t_tetr *tetr, t_piece *holded_piece)
 void	hold_piece(t_tetr *tetr, int flag)
 {
 	static t_piece	holded_piece;
-    t_piece         tmp;
+	t_piece		tmp;
 
-    if (tetr->hold_toggle == -1)
-        first_time_holding(tetr, &holded_piece);
-    else if (flag)
-    {
-        clean_box(&tetr->img, tetr->texture, tetr->hold_box_size);
-        put_piece(holded_piece, tetr->hold_box_size, &tetr->img);
-        tetr->hold_toggle = 1;
-    }
-    else if (tetr->hold_toggle == 1)
-    {
-        tmp = holded_piece;
-        holded_piece = tetr->cur;
-        holded_piece.color = GRAY;
-        clean_box(&tetr->img, tetr->texture, tetr->hold_box_size);
-        put_piece(holded_piece, tetr->hold_box_size, &tetr->img);
-        holded_piece.color = tetr->cur.color;
-        tetr->cur = tmp;
-        tetr->cur.start_index = (t_point){.x = (TOTAL_TILE_X - tetr->cur.mtxlen.x) / 2, .y = 0};
-        tetr->hold_toggle = 0;
-    }
+	if (tetr->hold_toggle == -1)
+		first_time_holding(tetr, &holded_piece);
+	else if (flag)
+	{
+		clean_box(&tetr->img, tetr->texture, tetr->hold_box_size);
+		put_piece(holded_piece, tetr->hold_box_size, &tetr->img);
+		tetr->hold_toggle = 1;
+	}
+	else if (tetr->hold_toggle == 1)
+	{
+		tmp = holded_piece;
+		holded_piece = tetr->cur;
+		holded_piece.color = GRAY;
+		clean_box(&tetr->img, tetr->texture, tetr->hold_box_size);
+		put_piece(holded_piece, tetr->hold_box_size, &tetr->img);
+		holded_piece.color = tetr->cur.color;
+		tetr->cur = tmp;
+		tetr->hold_toggle = 0;
+	}
 }

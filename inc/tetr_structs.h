@@ -54,8 +54,6 @@
 #define L_SHAPE_COLOR		0xFF9933
 #define L_MIRRORED_COLOR	0x6666FF
 
-typedef	char	Shape[4][4];
-
 typedef struct s_plane
 {
 	int					x0;
@@ -75,27 +73,23 @@ typedef enum e_type
 	L_MIRRORED
 }						t_type;
 
-typedef struct s_piece
-{
-	Shape				design;
-	unsigned int		color;
-	t_type				type;
-	t_point				mtxlen;
-	t_point				mtxstart;
-	t_point				start_index;
-	t_point				iterator;
-	t_point				reverse;
-}						t_piece;
-
 typedef struct s_tile
 {
 	unsigned int		color;
-	t_point				crd;
+	t_point			crd;
 	struct s_tile		*up;
 	struct s_tile		*down;
 	struct s_tile		*left;
 	struct s_tile		*right;
 }						t_tile;
+
+typedef struct s_piece
+{
+	t_point		coords[4];
+	t_point		hollow[4];
+	unsigned int	color;
+	t_type		type;
+}				t_piece;
 
 typedef struct s_player
 {
@@ -104,24 +98,24 @@ typedef struct s_player
 
 typedef struct s_tetr
 {
-	void				*mlx;
-	void				*win;
-	t_img				img;
-	t_img				texture;
-	t_tile				**tiles;
-	t_piece				cur;
-	t_piece				pieces[7];
-	t_piece				next_stack[5];
-	int					lines[20];
 	int					down;
 	int					hold_toggle;
 	t_plane				imbroglio_bar_size;
 	t_plane				hold_box_size;
-	t_plane				next_box_size;
 	t_plane				time_box_size;
-	unsigned long long	start_time;
+	t_plane				next_box_size;
+	unsigned long long		start_time;
 	char				*cur_time;
+	void				*mlx;
+	void				*win;
 	t_player			player;
+	t_tile				**tiles;
+	t_img				img;
+	t_img				texture;
+	t_piece				cur;
+	t_piece				pieces[7];
+	t_piece				next_stack[5];
+	int					lines[20];
 }						t_tetr;
 
 #endif

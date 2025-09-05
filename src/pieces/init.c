@@ -12,73 +12,26 @@
 
 #include "tetr.h"
 
-void	init_piece(t_piece *piece)
+void	init_pieces(t_piece *pieces)
 {
-	ft_memset(piece->design, 0, sizeof(piece->design));
-	piece->color = 0;
-	piece->type = 0;
-	piece->mtxlen = (t_point){0, 0};
-	piece->mtxstart = (t_point){0, 0};
-	piece->start_index = (t_point){0, 0};
-	piece->reverse = (t_point){0, 0};
-	piece->iterator = (t_point){0, 0};
-}
+	pieces[SQUARE] = (t_piece){.color = SQUARE_COLOR, .type = SQUARE};
+	pieces[STRAIGHT] = (t_piece){.color = STRAIGHT_COLOR, .type = STRAIGHT};
+	pieces[T_SHAPE] = (t_piece){.color = T_SHAPE_COLOR, .type = T_SHAPE};
+	pieces[TILTED_S] = (t_piece){.color = TILTED_S_COLOR, .type = TILTED_S};
+	pieces[TILTED_Z] = (t_piece){.color = TILTED_Z_COLOR, .type = TILTED_Z};
+	pieces[L_SHAPE] = (t_piece){.color = L_SHAPE_COLOR, .type = L_SHAPE};
+	pieces[L_MIRRORED] = (t_piece){.color = L_MIRRORED_COLOR, .type = L_MIRRORED};
 
-void	init_pieces(t_piece *pieces, int i, t_point empty)
-{
-	pieces[SQUARE] = (t_piece){.color = SQUARE_COLOR, .type = SQUARE, .mtxlen = (t_point){2, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[STRAIGHT] = (t_piece){.color = STRAIGHT_COLOR, .type = STRAIGHT, .mtxlen = (t_point){4, 1}, .mtxstart = (t_point){0, 1}, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[T_SHAPE] = (t_piece){.color = T_SHAPE_COLOR, .type = T_SHAPE, .mtxlen = (t_point){3, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[TILTED_S] = (t_piece){.color = TILTED_S_COLOR, .type = TILTED_S, .mtxlen = (t_point){3, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[TILTED_Z] = (t_piece){.color = TILTED_Z_COLOR, .type = TILTED_Z, .mtxlen = (t_point){3, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[L_SHAPE] = (t_piece){.color = L_SHAPE_COLOR, .type = L_SHAPE, .mtxlen = (t_point){3, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-	pieces[L_MIRRORED] = (t_piece){.color = L_MIRRORED_COLOR, .type = L_MIRRORED, .mtxlen = (t_point){3, 2}, .mtxstart = empty, .start_index = empty, .iterator = empty, .reverse = empty};
-
-	Shape	designs[7] = {
-		{
-			{'1', '1', '0', '0'},
-			{'1', '1', '0', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'0', '0', '0', '0'},
-			{'1', '1', '1', '1'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'0', '1', '0', '0'},
-			{'1', '1', '1', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'0', '1', '1', '0'},
-			{'1', '1', '0', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'1', '1', '0', '0'},
-			{'0', '1', '1', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'1', '0', '0', '0'},
-			{'1', '1', '1', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
-		{
-			{'0', '0', '1', '0'},
-			{'1', '1', '1', '0'},
-			{'0', '0', '0', '0'},
-			{'0', '0', '0', '0'}
-		},
+	static const t_point	objs_coords[7][4] = {
+					{{4, 0}, {4, 1}, {5, 0}, {5, 1}}, //SQUARE COORDS
+					{{3, 0}, {4, 0}, {5, 0}, {6, 0}}, //STRAIGHT COORDS
+					{{3, 1}, {4, 1}, {4, 0}, {5, 1}}, //T_SHAPE COORDS
+					{{5, 1}, {4, 1}, {4, 0}, {3, 0}}, //TILTED_S COORDS
+					{{3, 1}, {4, 1}, {4, 0}, {5, 0}}, //TILTED_Z COORDS
+					{{3, 1}, {4, 1}, {5, 1}, {5, 0}}, //L_SHAPE COORDS
+					{{5, 1}, {4, 1}, {3, 1}, {3, 0}}  //L_MIRRORED
 	};
 
-	while (++i < 7)
-		mtxcpy(designs[i], pieces[i].design, ft_max_point(pieces[i].mtxlen));
+	for (int i = 0; i < 7; i++)
+		ft_memcpy(pieces[i].coords, objs_coords[i], sizeof(t_point) * 4);
 }
