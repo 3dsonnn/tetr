@@ -47,10 +47,10 @@ void	get_piece_limits( t_point *coords, t_point *great_x, t_point *great_y, t_po
 
 void    move_piece(t_tetr *tetr, int keycode)
 {
-	t_piece			*piece;
+	t_piece	*piece;
 	t_point	great_x;
 	t_point	low_x;
-	short			step;
+	char	step;
 
 	piece = &tetr->cur;
 	if (keycode == LEFT)
@@ -68,28 +68,35 @@ void    move_piece(t_tetr *tetr, int keycode)
 		if (low_x.x == 0 || tetr->tiles[low_x.y][low_x.x - 1].color)
 			return ;
 	}
-	render_piece(tetr, false);
+	render_piece(tetr, 0);
 	for (int i = 0; i < 4; i++)
 		piece->coords[i].x += step;
-	render_piece(tetr, true);
+	render_piece(tetr, 1);
 }
 
-void    fall_piece(t_tetr *tetr)
+
+void	fall_piece(t_tetr *tetr)
 {
-	t_piece		*piece;
+	t_piece	*piece;
 	t_point	great_y;
 
 	piece = &tetr->cur;
 	get_piece_limits( piece->coords, NULL, &great_y, NULL, NULL );
-	if (great_y.y == TOTAL_TILE_Y - 1 || tetr->tiles[great_y.y + 1][great_y.x].color)
+	if (great_y.y == TOTAL_TILE_Y - 1)
 	{
 		update_piece(tetr);
 		return ;
 	}
-	render_piece(tetr, false);
+	render_piece(tetr, 0);
 	for (int i = 0; i < 4; i++)
 		piece->coords[i].y++;
-	render_piece(tetr, true);
+	if (object_will_collide( tetr ))
+	{
+		for (int i = 0; i < 4; i++)
+			piece->coords[i].y--;
+		render_piece(tetr, 1);
+		update_piece(tetr);
+		return ;
+	}
+	render_piece(tetr, 1);
 }
-
-//ACHO QUE ELE TEM QUE CAIR COM BASE NO TEMPO E NÃO SE TOCAR NO CHÃO

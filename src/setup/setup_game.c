@@ -43,9 +43,7 @@ void	setup_game(t_tetr *tetr)
 	setup_tiles(tetr, &tetr->tiles);
 	setup_design(tetr, &tetr->img);
 	tetr->cur = get_random_piece(tetr);
-	//if (object_will_collide( tetr ))
-	//	return ;
-	render_piece(tetr, true);
+	render_piece(tetr, 1);
 	for (int i = 0; i < 5; i++)
 		tetr->next_stack[i] = get_random_piece(tetr);
 	fill_next_box(tetr, tetr->next_box_size);

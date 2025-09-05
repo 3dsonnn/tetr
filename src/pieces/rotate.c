@@ -34,17 +34,17 @@ static void	fix_limits( t_point *coords, t_point lowest, t_point greatest )
 			coords[i].x += -lowest.x;
 	else if (greatest.x >= TOTAL_TILE_X)
 		for (int i = 0; i < 4; i++)
-			coords[i].x -= lowest.x - TOTAL_TILE_X + 1;
+			coords[i].x -= greatest.x - TOTAL_TILE_X + 1;
 
 	if (lowest.y < 0)
 		for (int i = 0; i < 4; i++)
 			coords[i].y += -lowest.y;
 	else if (greatest.y >= TOTAL_TILE_Y)
 		for (int i = 0; i < 4; i++)
-			coords[i].y -= lowest.y - TOTAL_TILE_Y + 1;
+			coords[i].y -= greatest.y - TOTAL_TILE_Y + 1;
 }
 
-static void	apply_rotation( t_piece *piece )
+static void	apply_rotation( t_piece *piece, t_point center )
 {
 	t_point	*coords;
 	t_point	lowest;
@@ -55,11 +55,12 @@ static void	apply_rotation( t_piece *piece )
 	greatest = (t_point){-42, -42};
 	for (int i = 0; i < 4; i++)
 	{
+		//Fazer Coords[x] - Center, ou seja subtrair centro de todas as coordenadas
+		coords[i] = (t_point){coords[i].x - center.x, coords[i].y - center.y};
+		//Aplicar a regra para rotacionar horário (x, y) = (-y, x)
 		coords[i] = (t_point){-coords[i].y, coords[i].x};
-		if (piece->mod)
-			coords[i].x--;
-		else
-			coords[i].x++;
+		//Depois disso voltar a somar o resultado com o centro
+		coords[i] = (t_point){coords[i].x + center.x, coords[i].y + center.y};
 
 		if (coords[i].x < lowest.x)
 			lowest.x = coords[i].x;
@@ -71,12 +72,7 @@ static void	apply_rotation( t_piece *piece )
 		else if (coords[i].y > greatest.y)
 			greatest.y = coords[i].y;
 	}
-	ft_printf("-----------------LIMITS---------------------------\n");
-	for (int i = 0; i < 4; i++)
-		ft_printf("x: %d | y: %d\n", coords[i].x, coords[i].y);
-	ft_printf("----------------------------------------------------\n");
 	fix_limits( coords, lowest, greatest );
-	piece->mod = !piece->mod;
 }
 
 void	rotate_piece( t_tetr *tetr )
@@ -85,21 +81,12 @@ void	rotate_piece( t_tetr *tetr )
 	t_point		copy[4];
 
 	cur = &tetr->cur;
-	ft_printf("-------------------START--------------------------\n");
-	for (int i = 0; i < 4; i++)
-		ft_printf("x: %d | y: %d\n", cur->coords[i].x, cur->coords[i].y);
-	ft_printf("----------------------------------------------------\n");
+	if (cur->type == SQUARE)
+		return ;
 	ft_memcpy(copy, cur->coords, sizeof(t_point) * 4);
-	render_piece(tetr, false);
-	apply_rotation( cur );
+	render_piece(tetr, 0);
+	apply_rotation( cur, copy[1 + (cur->type == STRAIGHT)] );
 	if (object_will_collide( tetr ))
-	{
-		cur->mod = !cur->mod;
 		ft_memcpy(cur->coords, copy, sizeof(t_point) * 4);
-	}
-	ft_printf("-----------------END--------------------------\n");
-	for (int i = 0; i < 4; i++)
-		ft_printf("x: %d | y: %d\n", cur->coords[i].x, cur->coords[i].y);
-	ft_printf("----------------------------------------------------\n");
-	render_piece(tetr, true);
+	render_piece(tetr, 1);
 }

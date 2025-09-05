@@ -37,12 +37,12 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		move_piece(tetr, keycode);
 	else if ((keycode == CKEY && tetr->hold_toggle) || keycode == AKEY)
 	{
-		render_piece(tetr, false);
+		render_piece(tetr, 0);
 		if (keycode == AKEY)
 			update_piece(tetr);
 		else
 			hold_piece(tetr, 0);
-		render_piece(tetr, true);
+		render_piece(tetr, 1);
 	}
 	return (0);
 }
@@ -57,7 +57,7 @@ static int	my_mlx_loop_hook(t_tetr *tetr)
 	if (cur_time - last_time > BREAK
 		|| (tetr->down && (cur_time - last_time > 50)))
 	{
-		//fall_piece(tetr);
+		fall_piece(tetr);
 		last_time = cur_time;
 	}
 	update_time(tetr);

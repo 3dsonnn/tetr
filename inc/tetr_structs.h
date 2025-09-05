@@ -94,8 +94,7 @@ typedef struct s_piece
 {
 	t_point		coords[4];
 	unsigned int	color;
-	char		mod;
-	char		type;
+	t_type		type;
 }				t_piece;
 
 typedef struct s_player
