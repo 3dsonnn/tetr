@@ -54,13 +54,6 @@
 #define L_SHAPE_COLOR		0xFF9933
 #define L_MIRRORED_COLOR	0x6666FF
 
-# define _END -1
-
-# define _R 0
-# define _D 1
-# define _L 2
-# define _U 3
-
 typedef struct s_plane
 {
 	int					x0;
@@ -93,6 +86,7 @@ typedef struct s_tile
 typedef struct s_piece
 {
 	t_point		coords[4];
+	t_point		hollow[4];
 	unsigned int	color;
 	t_type		type;
 }				t_piece;

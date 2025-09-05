@@ -12,55 +12,64 @@
 
 #include "tetr.h"
 
-int	render_piece( t_tetr *tetr, int renderize )
+static void	render_hollow_piece( t_tetr *tetr, bool clean_hollow )
+{
+	static t_point	great_y;
+	t_point		*hollow;
+	t_tile		*tile;
+
+	hollow = tetr->cur.hollow;
+	if (clean_hollow)
+	{
+		for (int i = 0; i < 4; i++)
+			if (hollow[i].y > great_y.y)
+				clean_piece_tile( tetr, &tetr->tiles[hollow[i].y][hollow[i].x] );
+		return ;
+	}
+	get_piece_limits( tetr->cur.coords, NULL, &great_y, NULL, NULL );
+	if (great_y.y == TOTAL_TILE_Y - 1)
+		return ;
+	for (int i = 0; i < 4; i++)
+		hollow[i] = tetr->cur.coords[i];
+	for (int i = 0; i < 4; i = (i + 1) % 4)
+	{
+		if (++hollow[i].y == TOTAL_TILE_Y
+			|| (hollow[i].y > great_y.y && tetr->tiles[hollow[i].y][hollow[i].x].color))
+		{
+			while (i >= 0)
+				hollow[i--].y--;
+			for (i = 0; i < 4; i++)
+			{
+				if (hollow[i].y > great_y.y)
+				{
+					tile = &tetr->tiles[hollow[i].y][hollow[i].x];
+					tile->color = GRAY; //Cinzento
+					paint_tile(tile, &tetr->img );
+					tile->color = 0;
+				}
+			}
+			break ;
+		}
+	}
+}
+
+int	render_piece( t_tetr *tetr, bool renderize )
 {
 	t_piece	*curr_piece;
 	t_tile	*tile;
-	t_point	hollow[4];
-	t_point	pos;
-	int	deep;
 
 	curr_piece = &tetr->cur;
 	for (int i = 0; i < 4; i++)
 	{
-		pos = curr_piece->coords[i];
-		tile = &tetr->tiles[pos.y][pos.x];
+		tile = &tetr->tiles[curr_piece->coords[i].y][curr_piece->coords[i].x];
 		if (renderize)
 		{
 			tile->color = curr_piece->color;
 			paint_tile( tile, &tetr->img );
 		}
 		else
-		{
 			clean_piece_tile( tetr, tile );
-			return (1);
-		}
 	}
-	if (i > 0)
-	{
-		get_limits( curr_piece->coords, NULL, NULL, &pos, NULL );
-		for (int i = 0; i < 4; i++)
-			hollow[i] = curr_piece->coords[i];
-		while ()
-		{
-			for (int i = 0; i < 4 && hollo; i++)
-				hollow[i].y++;
-			{
-				hollow[i].y++;
-				if (hollow[i].y > pos.y && hollow[i].y < TOTAL_TILE_Y)
-				{
-					if (tetr->tiles[hollow[i].y][hollow[i].x].color)
-					{
-						while (i >= 0)
-							hollow[i].y--;
-						break ;
-					}
-					else if (hollow[i].y == TOTAL_TILE_Y - 1)
-						break ;
-				}
-			}
-		}
-	}
-	
+	render_hollow_piece( tetr, !renderize );
 	return (1);
 }

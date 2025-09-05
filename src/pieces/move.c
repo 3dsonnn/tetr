@@ -12,7 +12,7 @@
 
 #include "tetr.h"
 
-void	get_piece_limits( t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x,
+void	get_piece_limits( const t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x,
 	t_point *low_y )
 {
 	t_point	greatest;
@@ -68,10 +68,10 @@ void    move_piece(t_tetr *tetr, int keycode)
 		if (low_x.x == 0 || tetr->tiles[low_x.y][low_x.x - 1].color)
 			return ;
 	}
-	render_piece(tetr, 0);
+	render_piece(tetr, false);
 	for (int i = 0; i < 4; i++)
 		piece->coords[i].x += step;
-	render_piece(tetr, 1);
+	render_piece(tetr, true);
 }
 
 
@@ -87,16 +87,16 @@ void	fall_piece(t_tetr *tetr)
 		update_piece(tetr);
 		return ;
 	}
-	render_piece(tetr, 0);
+	render_piece(tetr, false);
 	for (int i = 0; i < 4; i++)
 		piece->coords[i].y++;
 	if (object_will_collide( tetr ))
 	{
 		for (int i = 0; i < 4; i++)
 			piece->coords[i].y--;
-		render_piece(tetr, 1);
+		render_piece(tetr, true);
 		update_piece(tetr);
 		return ;
 	}
-	render_piece(tetr, 1);
+	render_piece(tetr, true);
 }

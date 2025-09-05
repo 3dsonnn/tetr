@@ -84,9 +84,9 @@ void	rotate_piece( t_tetr *tetr )
 	if (cur->type == SQUARE)
 		return ;
 	ft_memcpy(copy, cur->coords, sizeof(t_point) * 4);
-	render_piece(tetr, 0);
+	render_piece(tetr, false);
 	apply_rotation( cur, copy[1 + (cur->type == STRAIGHT)] );
 	if (object_will_collide( tetr ))
 		ft_memcpy(cur->coords, copy, sizeof(t_point) * 4);
-	render_piece(tetr, 1);
+	render_piece(tetr, true);
 }

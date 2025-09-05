@@ -43,7 +43,7 @@ void	setup_game(t_tetr *tetr)
 	setup_tiles(tetr, &tetr->tiles);
 	setup_design(tetr, &tetr->img);
 	tetr->cur = get_random_piece(tetr);
-	render_piece(tetr, 1);
+	render_piece(tetr, true);
 	for (int i = 0; i < 5; i++)
 		tetr->next_stack[i] = get_random_piece(tetr);
 	fill_next_box(tetr, tetr->next_box_size);

@@ -78,7 +78,7 @@ void	burn_lines(t_tetr *tetr);
 // RENDER
 void	clean_piece_tile(t_tetr *tetr, t_tile *tile);
 void	paint_piece_tile(t_tetr *tetr, t_tile *tile);
-int	render_piece( t_tetr *tetr, int renderize );
+int	render_piece( t_tetr *tetr, bool renderize );
 // UPDATED
 void    update_piece(t_tetr *tetr);
 // PUT
@@ -119,6 +119,6 @@ void		paint_tile(t_tile *tile, t_img *img);
 extern void	swap_tile_attr(t_tile *a, t_tile *z);
 
 
-void	get_piece_limits( t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x, t_point *low_y );
+void	get_piece_limits( const t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x, t_point *low_y );
 bool	object_will_collide( t_tetr *tetr );
 #endif
