@@ -53,11 +53,6 @@ INC =	-I./inc							\
 		-I./$(MY_MLX_PATH)/inc			\
 		-I./$(MINILIBX_PATH)			\
 
-INC =	-I./inc							\
-		-I./$(SUPER_LIBFT_PATH)/inc		\
-		-I./$(MY_MLX_PATH)/inc			\
-		-I./$(MINILIBX_PATH)			\
-
 CC = cc
 RM = rm -rf
 

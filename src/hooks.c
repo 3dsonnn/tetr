@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -82,3 +83,4 @@ void	my_mlx_hooks(t_tetr *tetr)
 	tetr->start_time = ft_gettimeofday();
 	mlx_loop_hook(tetr->mlx, my_mlx_loop_hook, tetr);
 }
+

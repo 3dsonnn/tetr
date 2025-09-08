@@ -32,14 +32,8 @@ void	set_tiles(t_tile **tiles, t_point padd)
 				tmp->crd = (t_point){.x = padd.x,
 					.y = tmp->up->crd.y + TILE + 1};
 			else
-			{
-				tmp->crd.x = tmp->left->crd.x + TILE + 1;
-				tmp->crd.y = tmp->left->crd.y + TILE + 1;
-			}
-				tmp->crd = (t_point){
-					.x = (padd.x + (iter.x * TILE)) + 1,
-					.y = (padd.y + (iter.y * TILE)) + 1
-				};
+				tmp->crd = (t_point){.x = tmp->left->crd.x + TILE + 1,
+					.y = tmp->left->crd.y};
 		}
 	}
 }

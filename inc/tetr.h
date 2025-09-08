@@ -46,14 +46,15 @@
 
 // INIT_TETR
 void		init_tetr(t_tetr *tetr);
-void	    setup_tiles(t_tetr *tetr, t_tile ***tiles);
-int         get_greatest(t_point point);
 
 // DEALLOCATE_TETR
 void		deallocate_tetr(t_tetr *tetr, char *message, int status);
 
 // PROMPT_USER
 void		prompt_user(t_tetr *tetr);
+
+// SETUP
+void		setup_game(t_tetr *tetr);
 
 // DESIGN
 void    design_tiles_divisions(t_img *texture, t_tile **tiles);
@@ -105,7 +106,6 @@ void    update_time(t_tetr *tetr);
 
 // INIT_MLX
 void		setup_mlx(t_tetr *tetr);
-void		setup_game(t_tetr *tetr);
 
 // HOOKS
 void		my_mlx_hooks(t_tetr *tetr);

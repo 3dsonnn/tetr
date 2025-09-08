@@ -17,8 +17,8 @@ void	design_tiles_divisions(t_img *texture, t_tile **tiles)
 	t_point	iter;
 	t_tile	*tmp;
 
-	iter = (t_point){-1, -1};
-	while (++iter.y < TOTAL_TILE_Y)
+	iter = (t_point){0, 0};
+    while (++iter.x < TOTAL_TILE_X)
 	{
         tmp = &tiles[0][iter.x];
 		my_mlx_draw_line_to_img(texture, (t_point){tmp->crd.x - 1, tmp->crd.y}, (t_point){1, ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y)}, WHITE);
