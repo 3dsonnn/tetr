@@ -1,3 +1,4 @@
+
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -12,7 +13,7 @@
 
 #include "../../inc/tetr.h"
 
- void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
+static void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
 {
 	t_point	padd;
 	t_point	half_tiles;
@@ -48,3 +49,4 @@ void	setup_game(t_tetr *tetr)
 		tetr->next_stack[i] = get_random_piece(tetr);
 	fill_next_box(tetr, tetr->next_box_size);
 }
+

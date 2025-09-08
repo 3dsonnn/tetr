@@ -16,9 +16,9 @@ void	update_piece(t_tetr *tetr)
 {
 	if (!tetr->hold_toggle)
 		hold_piece(tetr, 1);
+	burn_lines(tetr);
 	tetr->cur = *tetr->next_stack;
 	move_next_box(tetr);
-	burn_lines(tetr);
 	if (object_will_collide( tetr ))
 		deallocate_tetr(tetr, "END OF THE GAME YOU LOST !!!!!!!!!", 0);
 }

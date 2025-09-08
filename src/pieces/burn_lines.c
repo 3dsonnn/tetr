@@ -16,53 +16,48 @@ static  int line_state(t_tile *ref, int flag)
 {
     if (!ref)
         return (0);
-    while (ref)
+    for (int i = 0; i < TOTAL_TILE_X; i++)
     {
-        if (flag && !ref->color)
+        if (flag && !ref[i].color)
             return (0);
-        else if (!flag && ref->color)
+        else if (!flag && ref[i].color)
             return (0);
-        ref = ref->right;
     }
     return (1);
 }
 
-static void drop_off_line(t_tetr *tetr, t_tile *top, t_tile *down)
+static void	drop_off_line( t_tetr *tetr, t_tile *top, t_tile *down )
 {
-    while (top && down)
-    {
-        down->color = top->color;
-        if (down->color)
-            paint_tile(down, &tetr->img);
-        else
-            clean_piece_tile(tetr, down);
-        top = top->right;
-        down = down->right;
-    }
+	if (!top || !down)
+		return ;
+	for (int i = 0; i < TOTAL_TILE_X; i++)
+	{
+		down[i].color = top[i].color;
+		if (down[i].color)
+			paint_tile(down + i, &tetr->img);
+		else
+			clean_piece_tile(tetr, down + i);
+	}
 }
 
 void	burn_lines(t_tetr *tetr)
 {
-    t_point iter;
-    t_tile  *tmp;
+	t_point	iter;
+	t_point low_y;
+	t_tile	*tmp;
 
-	iter.y = TOTAL_TILE_Y;
-	while (--iter.y >= 0)
+	get_piece_limits( tetr->cur.coords, NULL, &iter, NULL, &low_y );
+	iter.x = ++iter.y;
+	while (--iter.y >= low_y.y)
 	{
-        if (line_state(tetr->tiles[iter.y], 1))
-        {
-            tmp = tetr->tiles[iter.y];
-            while (tmp)
-            {
-                clean_piece_tile(tetr, tmp);
-                tmp = tmp->right;
-            }
-            while (iter.y)
-            {
-                drop_off_line(tetr, tetr->tiles[iter.y - 1], tetr->tiles[iter.y]);
-                iter.y--;
-            }
-            iter.y = TOTAL_TILE_Y;
-        }
+		if (line_state(tetr->tiles[iter.y], 1))
+		{
+			tmp = tetr->tiles[iter.y];
+			for (int i = 0; i < TOTAL_TILE_X; i++)
+				clean_piece_tile(tetr, tmp + i);
+			while (--iter.y)
+				drop_off_line(tetr, tetr->tiles[iter.y], tetr->tiles[iter.y + 1]);
+			iter.y = iter.x; //iter.x is used as a tmp var to store de iter.y
+		}
 	}
 }

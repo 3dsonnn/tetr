@@ -34,7 +34,6 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		render_piece(tetr, false);
 		for (int i = 0; i < 4; i++)
 			tetr->cur.coords[i] = tetr->cur.hollow[i];
-		tetr->cur.hollow[0].x = -100;
 		render_piece(tetr, true);
 		update_piece(tetr);
 	}
