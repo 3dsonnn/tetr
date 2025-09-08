@@ -27,9 +27,6 @@ static inline int	my_mlx_key_release(int keycode, t_tetr *tetr)
 
 static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 {
-	t_obj		*object;
-	t_point		matrix_end;
-
 	if (keycode == ESC)
 		deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
 	if (keycode == SPACE)

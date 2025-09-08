@@ -6,11 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 12:59:02 by efinda            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/05/26 08:19:28 by efinda           ###   ########.fr       */
-=======
 /*   Updated: 2025/06/17 17:02:37 by efinda           ###   ########.fr       */
->>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +48,6 @@
 void		init_tetr(t_tetr *tetr);
 void	    setup_tiles(t_tetr *tetr, t_tile ***tiles);
 int         get_greatest(t_point point);
-//OBJECTS
-
-void	rotate_object(t_obj *obj);
-
-void	erase_object_tile(t_tetr *vars, t_tile *this_tile);
-
-void	paint_object_tile(t_tetr *tetr, t_tile *this_tile);
-
-void	render_object(t_tetr *vars, void (*tile_action)(t_tetr *, t_tile *));
 
 // DEALLOCATE_TETR
 void		deallocate_tetr(t_tetr *tetr, char *message, int status);

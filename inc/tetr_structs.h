@@ -91,18 +91,6 @@ typedef struct s_piece
 	t_type		type;
 }				t_piece;
 
-typedef struct	s_obj
-{
-	char		design[4][4];
-	unsigned int	color;
-	t_obj_type		type;
-	t_point			matrix_len;
-	t_point			matrix_start;
-	t_point			start_index;
-	t_point			reverse;
-	t_point			iterator;
-}	t_obj;
-
 typedef struct s_player
 {
 	char				*name;
