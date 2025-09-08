@@ -6,13 +6,13 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/25 19:53:48 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 08:19:18 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/10 13:23:28 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/tetr.h"
 
-void	design_tiles_divisions(t_img *background, t_tile **tiles)
+void	design_tiles_divisions(t_img *texture, t_tile **tiles)
 {
 	t_point	iter;
 	t_tile	*tmp;
@@ -20,73 +20,111 @@ void	design_tiles_divisions(t_img *background, t_tile **tiles)
 	iter = (t_point){-1, -1};
 	while (++iter.y < TOTAL_TILE_Y)
 	{
-		iter.x = -1;
-		while (++iter.x < TOTAL_TILE_X)
-		{
-			tmp = &tiles[iter.y][iter.x];
-			my_mlx_draw_line_to_img(background, (t_point){tmp->crd.x - 1, tmp->crd.y - 1}, (t_point){1, TILE}, WHITE);
-			if (iter.y)
-			    my_mlx_draw_line_to_img(background, (t_point){tmp->crd.x - 1, tmp->crd.y - 1}, (t_point){TILE, 1}, WHITE);
-            if (iter.x + 1 == TOTAL_TILE_X)
-				my_mlx_draw_line_to_img(background, (t_point){tmp->crd.x - 1 + TILE, tmp->crd.y - 1}, (t_point){1, TILE}, WHITE);
-			if (iter.y + 1 == TOTAL_TILE_Y)
-				my_mlx_draw_line_to_img(background, (t_point){tmp->crd.x - 1, tmp->crd.y - 1 + TILE}, (t_point){TILE, 1}, WHITE);
-		}
+        tmp = &tiles[0][iter.x];
+		my_mlx_draw_line_to_img(texture, (t_point){tmp->crd.x - 1, tmp->crd.y}, (t_point){1, ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y)}, WHITE);
+	}
+    while (++iter.y < TOTAL_TILE_Y)
+	{
+        tmp = &tiles[iter.y][0];
+		my_mlx_draw_line_to_img(texture, (t_point){tmp->crd.x, tmp->crd.y - 1}, (t_point){(TOTAL_TILE_X * TILE) + TOTAL_TILE_X, 1}, WHITE);
 	}
 }
 
-void	design_hold_tile_box(t_img *background_img, t_tile **tiles)
+void	design_border(t_img *img, t_tile **tiles)
 {
     t_tile  *first;
     int     line_thickness;
 
     first = *tiles;
     line_thickness = 3;
-	my_mlx_draw_line_to_img(background_img,
-        (t_point){first->crd.x - ((TILE * 5) + (line_thickness * 2)), first->crd.y - 1},
-        (t_point){(TILE * 5) + (line_thickness * 2), TILE}, WHITE);
-    my_mlx_draw_line_to_img(background_img,
-        (t_point){first->crd.x - ((TILE * 5) + (line_thickness * 2)), first->crd.y - 1},
-        (t_point){line_thickness, (TILE * 4)}, WHITE);
-    my_mlx_draw_line_to_img(background_img,
-        (t_point){first->crd.x - ((TILE * 5) + (line_thickness * 2)), (first->crd.y - 2) + (TILE * 4)},
-        (t_point){((TILE * 5) + (line_thickness * 2)), line_thickness}, WHITE);
-    my_mlx_draw_line_to_img(background_img,
+    my_mlx_draw_line_to_img(img,
         (t_point){first->crd.x - line_thickness, first->crd.y},
-        (t_point){line_thickness, (TILE * TOTAL_TILE_Y)}, WHITE);
-    my_mlx_draw_line_to_img(background_img,
-        (t_point){first->crd.x + (TILE * TOTAL_TILE_X), first->crd.y - 1},
-        (t_point){line_thickness, ((TILE * TOTAL_TILE_Y) + 1)}, WHITE);
-    my_mlx_draw_line_to_img(background_img,
-        (t_point){first->crd.x - line_thickness, (first->crd.y - 1) + (TILE * TOTAL_TILE_Y)},
-        (t_point){(TILE * TOTAL_TILE_X) + (line_thickness * 2), line_thickness}, WHITE);
+        (t_point){line_thickness, ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y + line_thickness)}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){first->crd.x + (TOTAL_TILE_X * TILE) + TOTAL_TILE_X, first->crd.y},
+        (t_point){line_thickness, ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y + line_thickness)}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){first->crd.x, first->crd.y + ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y)},
+        (t_point){((TOTAL_TILE_X * TILE) + TOTAL_TILE_X), line_thickness}, WHITE);
 }
 
-void	design_next_tile_box(t_img *background_img, t_tile **tiles)
+void    design_imbroglio_bar(t_img *img, t_tile **tiles, t_plane *size)
 {
-	t_tile	*last;
-	int		line_thickness;
+    t_tile  *last;
+    t_tile  *last_on_line;
+    int     width;
+    int     line_thickness;
 
-	line_thickness = 3;
-	last = &tiles[TOTAL_TILE_X - 1][TOTAL_TILE_Y - 1];
+    line_thickness = 3;
+    width = (int)floor(TILE / 2);
+    last_on_line = &tiles[0][TOTAL_TILE_X - 1];
+    last = &tiles[TOTAL_TILE_Y - 1][TOTAL_TILE_X - 1];
+    my_mlx_draw_line_to_img(img,
+        (t_point){last->crd.x + TILE + line_thickness, last->crd.y + TILE + 1},
+        (t_point){width, line_thickness}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){last_on_line->crd.x + TILE + line_thickness + width, last_on_line->crd.y},
+        (t_point){line_thickness, ((TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y + line_thickness)}, WHITE);
+    size->x0 = last_on_line->crd.x + TILE + line_thickness + 1;
+    size->x = size->x0 + width - 1;
+    size->y0 = last_on_line->crd.y;
+    size->y = size->y0 + (TOTAL_TILE_Y * TILE) + TOTAL_TILE_Y;
+}
 
-	my_mlx_draw_line_to_img(background_img,
-		(t_point){last->crd.x, last->crd.y + (TILE * TOTAL_TILE_Y)},
-			(t_point){(TILE / 2), line_thickness}, WHITE);
+void	design_hold_box(t_tetr *tetr, t_img *img, t_tile **tiles, t_plane *size)
+{
+    t_tile  *first;
+    int     line_thickness;
 
-    // my_mlx_draw_line_to_img(background_img,
-    //     (t_point){first->crd.x - ((TILE * 5) + (line_thickness * 2)), first->crd.y - 1},
-    //     (t_point){line_thickness, (TILE * 4)}, WHITE);
-    // my_mlx_draw_line_to_img(background_img,
-    //     (t_point){first->crd.x - ((TILE * 5) + (line_thickness * 2)), (first->crd.y - 2) + (TILE * 4)},
-    //     (t_point){((TILE * 5) + (line_thickness * 2)), line_thickness}, WHITE);
-    // my_mlx_draw_line_to_img(background_img,
-    //     (t_point){first->crd.x - line_thickness, first->crd.y},
-    //     (t_point){line_thickness, (TILE * TOTAL_TILE_Y)}, WHITE);
-    // my_mlx_draw_line_to_img(background_img,
-    //     (t_point){first->crd.x + (TILE * TOTAL_TILE_X), first->crd.y - 1},
-    //     (t_point){line_thickness, ((TILE * TOTAL_TILE_Y) + 1)}, WHITE);
-    // my_mlx_draw_line_to_img(background_img,
-    //     (t_point){first->crd.x - line_thickness, (first->crd.y - 1) + (TILE * TOTAL_TILE_Y)},
-    //     (t_point){(TILE * TOTAL_TILE_X) + (line_thickness * 2), line_thickness}, WHITE);
+    first = *tiles;
+    line_thickness = 3;
+	size->y0 = first->crd.y + TILE;
+    size->y = size->y0 + (TILE * 3);
+    size->x0 = first->crd.x - (line_thickness + (TILE * 5));
+    size->x = size->x0 + (TILE * 5);
+    my_mlx_draw_line_to_img(img,
+        (t_point){size->x0 - line_thickness, size->y0 - TILE},
+        (t_point){(TILE * 5) + line_thickness, TILE}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){size->x0 - line_thickness, size->y0},
+        (t_point){line_thickness, (TILE * 3)}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){size->x0 - line_thickness, size->y0 + (TILE * 3)},
+        (t_point){(TILE * 5) + line_thickness, line_thickness}, WHITE);
+    mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "HOLD");
+}
+
+void	design_next_box(t_tetr *tetr, t_img *img, t_plane *size, t_point start)
+{
+    int     line_thickness;
+
+    line_thickness = 3;
+    size->x0 = start.x;
+    size->x = size->x0 + (TILE * 5);
+    size->y0 = start.y + TILE;
+    size->y = size->y0 + (TILE * 13);
+	my_mlx_draw_line_to_img(img,
+        (t_point){start.x, start.y},
+        (t_point){(TILE * 5), TILE}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){size->x0, size->y0 + (TILE * 13)},
+        (t_point){(TILE * 5), line_thickness}, WHITE);
+    my_mlx_draw_line_to_img(img,
+        (t_point){start.x + (TILE * 5), start.y},
+        (t_point){line_thickness, (TILE * 14) + line_thickness}, WHITE);
+	mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "NEXT");
+}
+
+void	design_time_box(t_tetr *tetr, t_img *img, t_plane *size, t_plane hold_box_size)
+{
+    int     line_thickness;
+
+    line_thickness = 3;
+	*size = hold_box_size;
+	size->y0 += (TILE * 18) + 19;
+	size->y = size->y0 + TILE + 1;
+    my_mlx_draw_line_to_img(img,
+        (t_point){size->x0 - line_thickness, size->y0 - (TILE + 1)},
+        (t_point){(size->x - size->x0) + line_thickness, (size->y - size->y0) + (TILE + 1)}, WHITE);
+    mlx_string_put(tetr->mlx, tetr->win, size->x0 + (TILE * 2), size->y0 - (TILE / 2.5), BLACK, "TIME");
 }

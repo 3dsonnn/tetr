@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 17:51:07 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/24 17:53:28 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/17 21:12:02 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,83 +18,70 @@ static int	my_mlx_close(t_tetr *tetr)
 	return (0);
 }
 
+static inline int	my_mlx_key_release(int keycode, t_tetr *tetr)
+{
+	if (keycode == DOWN)
+		tetr->down = 0;
+	return (0);
+}
+
 static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 {
 	t_obj		*object;
 	t_point		matrix_end;
 
 	if (keycode == ESC)
-        deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
-	object = tetr->obj;
-	matrix_end.x = object->matrix_start.x + object->matrix_len.x - 1;
-	matrix_end.y = object->matrix_start.y + object->matrix_len.y - 1;
-	if (keycode == UP)
+		deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
+	if (keycode == SPACE)
 	{
-		write(1, "UP\n", 3);
-		render_object(tetr, erase_object_tile);
-		rotate_object(object);
-		//Se o objecto está na parede esquerda e a sua rotação poderá faze-lo ir alem da parede
-		if (!object->start_index.x && object->iterator.x)
-			object->iterator.x = 0;
-		else if (object->start_index.x + get_greatest(object->matrix_len) >= TOTAL_TILE_X)
-		{
-			object->start_index.x -= object->reverse.x;
-			object->reverse.x = 0;
-		}
-		render_object(tetr, paint_object_tile);
+		render_piece(tetr, false);
+		for (int i = 0; i < 4; i++)
+			tetr->cur.coords[i] = tetr->cur.hollow[i];
+		tetr->cur.hollow[0].x = -100;
+		render_piece(tetr, true);
+		update_piece(tetr);
 	}
-	else if (keycode == LEFT)
+	else if (keycode == UP)
+		rotate_piece(tetr);
+	else if (keycode == DOWN)
+		tetr->down = 1;
+	else if (keycode == LEFT || keycode == RIGHT)
+		move_piece(tetr, keycode);
+	else if ((keycode == CKEY && tetr->hold_toggle) || keycode == AKEY)
 	{
-		render_object(tetr, erase_object_tile);
-		//Se ainda pode ser decrementado
-		if (object->start_index.x)
-		{
-			if (object->reverse.x)
-				object->reverse.x--;
-			object->start_index.x--;
-		}
-		//Se o range do objecto esta na parede esquerda mas a sua forma fisica ainda não tocou
-		else if (object->matrix_start.x && (object->matrix_start.x - object->iterator.x))
-		{
-			object->iterator.x++;
-		}
-		ft_printf("LEFT: %d\n", object->start_index.x);
-		render_object(tetr, paint_object_tile);
+		render_piece(tetr, false);
+		if (keycode == AKEY)
+			update_piece(tetr);
+		else
+			hold_piece(tetr, 0);
+		render_piece(tetr, true);
 	}
-	else if (keycode == RIGHT)
-	{
-		render_object(tetr, erase_object_tile);
-		//Verifica se o há colunas vazias dentro da matriz e se o iterador do objecto é diferente de zero, caso para quando o objecto estiver do lado esquerdo
-		if (object->matrix_start.x && object->iterator.x) //ERRO ESTÁ AQUI!!!!!!!!!!!!!!!!!!!!!!!!
-		{
-			object->iterator.x--;
-		}
-		//Se o índex de inicio dos tales mais o maior comprimento do objecto for menor que o numero de tiles em x, para evitar que ele vá além da tabela
-		else if (object->start_index.x + get_greatest(object->matrix_len) < TOTAL_TILE_X)
-		{
-			object->start_index.x++;
-		}
-		//Se o range do objecto esta na parede direita mas a sua forma fisica ainda não tocou
-		else if (matrix_end.x + 1 + object->reverse.x < get_greatest(object->matrix_len))
-		{
-			object->start_index.x++;
-			object->reverse.x++;
-		}
-		ft_printf("RIGHT: %d\n", object->start_index.x);
-		render_object(tetr, paint_object_tile);
-	}
-	mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->background_img.img, 0, 0);
 	return (0);
 }
 
 static int	my_mlx_loop_hook(t_tetr *tetr)
 {
+	(void)tetr;
+	static unsigned long long	last_time;
+	unsigned long long			cur_time;
+
+	cur_time = ft_gettimeofday();
+	if (cur_time - last_time > BREAK
+		|| (tetr->down && (cur_time - last_time > 50)))
+	{
+		fall_piece(tetr);
+		last_time = cur_time;
+	}
+	update_time(tetr);
+	update_scenario(tetr);
 	return (0);
 }
 
 void	my_mlx_hooks(t_tetr *tetr)
 {
 	mlx_hook(tetr->win, 2, 1L << 0, my_mlx_key_press, tetr);
+	mlx_hook(tetr->win, 3, 1L << 1, my_mlx_key_release, tetr);
 	mlx_hook(tetr->win, 17, 1L << 17, my_mlx_close, tetr);
+	tetr->start_time = ft_gettimeofday();
 	mlx_loop_hook(tetr->mlx, my_mlx_loop_hook, tetr);
 }

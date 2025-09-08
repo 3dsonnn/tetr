@@ -1,24 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   get_random_piece.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 17:01:37 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/17 17:02:09 by efinda           ###   ########.fr       */
+/*   Created: 2025/05/26 20:51:38 by efinda            #+#    #+#             */
+/*   Updated: 2025/06/16 12:01:12 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetr.h"
+#include "../../inc/tetr.h"
 
-inline void swap_tile_attr(t_tile *a, t_tile *z)
+t_piece	get_random_piece(t_tetr *tetr)
 {
-    t_tile tmp;
+	static t_piece	prev;
+	int				index;
 
-    if (!a || !z)
-        return ;
-    tmp = *a;
-    a->color = z->color;
-    z->color = tmp.color;
+	while (-42)
+	{
+		index = rand() % 7;
+		if (tetr->pieces[index].type == prev.type)
+			continue ;
+		prev = tetr->pieces[index];
+		break ;
+	}
+	return (prev);
 }

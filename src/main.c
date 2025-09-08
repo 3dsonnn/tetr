@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 13:07:33 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/10 11:17:56 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/14 22:41:54 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 
 int	ft_close(int keycode, t_tetr *vars)
 {
-	if (keycode == 65307)
-	{
-		mlx_destroy_image(vars->mlx, vars->main_img.img);
-		mlx_destroy_window(vars->mlx, vars->win);
-		mlx_destroy_display(vars->mlx);
-		free(vars->mlx);
-		exit(0);
-	}
-	return (0);
+    t_tetr  tetr;
+
+    (void)ac;
+    (void)av;
+
+    init_tetr(&tetr);
+    // prompt_user(&tetr);
+    setup_game(&tetr);
+    my_mlx_hooks(&tetr);
+    mlx_loop(tetr.mlx);
+    return (0);
 }
 
 int	ft_destroy_window(t_tetr *vars)

@@ -6,7 +6,7 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 07:46:13 by efinda            #+#    #+#             */
-/*   Updated: 2025/05/26 08:16:47 by efinda           ###   ########.fr       */
+/*   Updated: 2025/06/16 18:27:00 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ void	init_tiles(t_tile ***tiles)
 		}
 		iter.x = -1;
 		while (++iter.x < TOTAL_TILE_X)
-			(*tiles)[iter.y][iter.x] = (t_tile){.color = 0, .crd = (t_point){0, 0},
-				.up = NULL, .down = NULL, .right = NULL, .left = NULL};
+			(*tiles)[iter.y][iter.x] = (t_tile){
+				.color = 0, .crd = (t_point){0, 0},
+				.up = NULL, .down = NULL, .right = NULL, .left = NULL
+			};
 	}
 }

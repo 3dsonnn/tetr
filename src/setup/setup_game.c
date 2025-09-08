@@ -6,7 +6,11 @@
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:46:16 by efinda            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/05/26 08:17:07 by efinda           ###   ########.fr       */
+=======
+/*   Updated: 2025/06/17 18:53:40 by efinda           ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +31,9 @@
 	set_tiles(*tiles, padd);
 }
 
-static void	setup_design(t_tetr *tetr, t_tile **tiles, t_img *background_img)
+static void	setup_design(t_tetr *tetr, t_img *main_img)
 {
+<<<<<<< HEAD
     t_tile  *first;
     int     line_thickness;
 
@@ -37,11 +42,24 @@ static void	setup_design(t_tetr *tetr, t_tile **tiles, t_img *background_img)
     design_tiles_divisions(background_img, tetr->tiles);
     design_hold_tile_box(background_img, tetr->tiles);
     design_next_tile_box(background_img, tetr->tiles);
+=======
+	design_tiles_divisions(main_img, tetr->tiles);
+	design_border(main_img, tetr->tiles);
+	design_imbroglio_bar(main_img, tetr->tiles, &tetr->imbroglio_bar_size);
+	design_hold_box(tetr, main_img, tetr->tiles, &tetr->hold_box_size);
+	design_time_box(tetr, main_img, &tetr->time_box_size, tetr->hold_box_size);
+	design_next_box(tetr, main_img, &tetr->next_box_size, (t_point){tetr->imbroglio_bar_size.x + 3, tetr->imbroglio_bar_size.y0});
+>>>>>>> main
 }
 
 void	setup_game(t_tetr *tetr)
 {
 	setup_mlx(tetr);
 	setup_tiles(tetr, &tetr->tiles);
-	setup_design(tetr, tetr->tiles, &tetr->background_img);
+	setup_design(tetr, &tetr->img);
+	tetr->cur = get_random_piece(tetr);
+	render_piece(tetr, true);
+	for (int i = 0; i < 5; i++)
+		tetr->next_stack[i] = get_random_piece(tetr);
+	fill_next_box(tetr, tetr->next_box_size);
 }

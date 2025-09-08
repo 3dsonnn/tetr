@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   update_piece.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: efinda <efinda@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 17:01:37 by efinda            #+#    #+#             */
-/*   Updated: 2025/06/17 17:02:09 by efinda           ###   ########.fr       */
+/*   Created: 2025/05/28 10:58:36 by efinda            #+#    #+#             */
+/*   Updated: 2025/06/17 21:10:06 by efinda           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetr.h"
+#include "../../inc/tetr.h"
 
-inline void swap_tile_attr(t_tile *a, t_tile *z)
+void	update_piece(t_tetr *tetr)
 {
-    t_tile tmp;
-
-    if (!a || !z)
-        return ;
-    tmp = *a;
-    a->color = z->color;
-    z->color = tmp.color;
+	if (!tetr->hold_toggle)
+		hold_piece(tetr, 1);
+	tetr->cur = *tetr->next_stack;
+	move_next_box(tetr);
+	burn_lines(tetr);
+	if (object_will_collide( tetr ))
+		deallocate_tetr(tetr, "END OF THE GAME YOU LOST !!!!!!!!!", 0);
 }
