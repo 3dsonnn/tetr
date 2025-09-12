@@ -24,7 +24,6 @@ SRC =	src/main.c						\
 		src/tile/set.c					\
 		src/tile/init.c					\
 		src/tile/free.c					\
-		src/tile/link.c					\
 		src/tile/paint.c				\
 		src/tile/utils.c				\
 		src/boxes_management/next.c		\
