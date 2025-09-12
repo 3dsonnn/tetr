@@ -44,13 +44,21 @@ static void	fix_limits( t_point *coords, t_point lowest, t_point greatest )
 			coords[i].y -= greatest.y - TOTAL_TILE_Y + 1;
 }
 
-static void	apply_rotation( t_piece *piece, t_point center )
+void	apply_straight_piece_rotation(t_piece *piece)
+{
+	(void)piece;
+	//Aplly straight rotation using the inside square 2*2  
+}
+
+static void	apply_normal_rotation( t_piece *piece )
 {
 	t_point	*coords;
+	t_point	center;
 	t_point	lowest;
 	t_point	greatest;
 
 	coords = piece->coords;
+	center = coords[1];
 	lowest = (t_point){42, 42};
 	greatest = (t_point){-42, -42};
 	for (int i = 0; i < 4; i++)
@@ -85,7 +93,7 @@ void	rotate_piece( t_tetr *tetr )
 		return ;
 	ft_memcpy(copy, cur->coords, sizeof(t_point) * 4);
 	render_piece(tetr, false);
-	apply_rotation( cur, copy[1 + (cur->type == STRAIGHT)] );
+	apply_normal_rotation( cur );
 	if (object_will_collide( tetr ))
 		ft_memcpy(cur->coords, copy, sizeof(t_point) * 4);
 	render_piece(tetr, true);

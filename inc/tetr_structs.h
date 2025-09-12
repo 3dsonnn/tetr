@@ -77,10 +77,6 @@ typedef struct s_tile
 {
 	unsigned int		color;
 	t_point			crd;
-	struct s_tile		*up;
-	struct s_tile		*down;
-	struct s_tile		*left;
-	struct s_tile		*right;
 }						t_tile;
 
 typedef struct s_piece

@@ -30,10 +30,10 @@ void	set_tiles(t_tile **tiles, t_point padd)
 				tmp->crd = padd;
 			else if (!iter.x)
 				tmp->crd = (t_point){.x = padd.x,
-					.y = tmp->up->crd.y + TILE + 1};
+					.y = tiles[iter.y - 1][iter.x].crd.y + TILE + 1};
 			else
-				tmp->crd = (t_point){.x = tmp->left->crd.x + TILE + 1,
-					.y = tmp->left->crd.y};
+				tmp->crd = (t_point){.x = (tmp - 1)->crd.x + TILE + 1,
+					.y = (tmp - 1)->crd.y};
 		}
 	}
 }

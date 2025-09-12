@@ -22,7 +22,7 @@ t_piece	get_random_piece(t_tetr *tetr)
 		index = rand() % 7;
 		if (tetr->pieces[index].type == prev.type)
 			continue ;
-		prev = tetr->pieces[index];
+		prev = tetr->pieces[1];
 		break ;
 	}
 	return (prev);

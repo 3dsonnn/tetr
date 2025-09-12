@@ -16,7 +16,7 @@ void    tilted_z(t_point start, unsigned int color, t_img *img)
 {
     t_tile  tile;
 
-    tile = (t_tile){.color = color, .crd = start, .up = NULL, .down = NULL, .right = NULL, .left = NULL};
+    tile = (t_tile){.color = color, .crd = start};
     paint_tile(&tile, img);
     tile.crd.x += TILE;
     paint_tile(&tile, img);

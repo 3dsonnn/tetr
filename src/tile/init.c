@@ -33,8 +33,7 @@ void	init_tiles(t_tile ***tiles)
 		iter.x = -1;
 		while (++iter.x < TOTAL_TILE_X)
 			(*tiles)[iter.y][iter.x] = (t_tile){
-				.color = 0, .crd = (t_point){0, 0},
-				.up = NULL, .down = NULL, .right = NULL, .left = NULL
+				.color = 0, .crd = (t_point){0, 0}
 			};
 	}
 }

@@ -24,7 +24,6 @@ static void	setup_tiles(t_tetr *tetr, t_tile ***tiles)
 	init_tiles(tiles);
 	if (!tiles || !*tiles)
 		deallocate_tetr(tetr, "Failed to allocate memory for the tiles", 1);
-	link_tiles(*tiles);
 	set_tiles(*tiles, padd);
 }
 
