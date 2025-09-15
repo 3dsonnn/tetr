@@ -12,15 +12,26 @@
 
 #include "../../inc/tetr.h"
 
-void    paint_tile(t_tile *tile, t_img *img)
+void    paint_tile(t_tile *tile, t_img *img, bool paint_dark)
 {
 	if (!tile)
 		return ;
-	for (int y = 0; y < TILE; y++)
-	{
-		for (int x = 0; x < TILE; x++)
-			my_mlx_pixel_put(img, tile->crd.x + x, tile->crd.y + y, tile->color);
-	}
+    int end = roundf(TILE / 8.0f);
+	int	lerp_color = my_mlx_get_lerp_color(0, tile->color, 0.4f);
+
+    for (int y = 0; y < TILE; y++)
+    {
+        for (int x = 0; x < TILE; x++)
+        {
+            if (y < end || y >= TILE - end || x < end || x >= TILE - end)
+                my_mlx_pixel_put(img, tile->crd.x + x, tile->crd.y + y, tile->color);
+			else if (((x == end + 1 && y > end && y < TILE - end - 1) || (y == end + 1 && x > end && x < TILE - end - 1))
+					|| ((x == TILE - end - 2 && y > end && y < TILE - end - 1) || (y == TILE - end - 2 && x > end && x < TILE - end - 1)))
+				my_mlx_pixel_put(img, tile->crd.x + x, tile->crd.y + y, tile->color);
+			else if (paint_dark)
+				my_mlx_pixel_put(img, tile->crd.x + x, tile->crd.y + y, lerp_color);
+        }
+    }
 }
 
 void	clean_piece_tile(t_tetr *tetr, t_tile *tile)

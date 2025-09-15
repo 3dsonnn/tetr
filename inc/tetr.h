@@ -115,7 +115,7 @@ void		free_tiles(t_tile ***tiles, int rows);
 void		link_tiles(t_tile **tiles);
 void		init_tiles(t_tile ***tiles);
 void		set_tiles(t_tile **tiles, t_point padd);
-void		paint_tile(t_tile *tile, t_img *img);
+void        paint_tile(t_tile *tile, t_img *img, bool paint_dark);
 extern void	swap_tile_attr(t_tile *a, t_tile *z);
 
 

@@ -18,14 +18,14 @@ void    t_shape(t_point start, unsigned int color, t_img *img)
 
     tile = (t_tile){.color = color, .crd = start};
     tile.crd.x += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd.x -= TILE;
     tile.crd.y += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd.x += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd.x += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     // Horizontal lines
     my_mlx_draw_line_to_img(img, (t_point){start.x + TILE, start.y}, (t_point){TILE, 1}, WHITE);
     my_mlx_draw_line_to_img(img, (t_point){start.x, start.y + TILE}, (t_point){(3 * TILE), 1}, WHITE);

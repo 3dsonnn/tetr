@@ -17,13 +17,13 @@ void    square(t_point start, unsigned int color, t_img *img)
     t_tile  tile;
 
     tile = (t_tile){.color = color, .crd = start};
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd.x += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd = (t_point){.x = tile.crd.x - TILE, .y = tile.crd.y + TILE};
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     tile.crd.x += TILE;
-    paint_tile(&tile, img);
+    paint_tile(&tile, img, true);
     // Horizontal lines
     my_mlx_draw_line_to_img(img, (t_point){start.x, start.y}, (t_point){TILE * 2, 1}, WHITE);
     my_mlx_draw_line_to_img(img, (t_point){start.x, start.y + TILE}, (t_point){TILE * 2, 1}, WHITE);

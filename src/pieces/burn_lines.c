@@ -34,7 +34,7 @@ static void	drop_off_line( t_tetr *tetr, t_tile *top, t_tile *down )
 	{
 		down[i].color = top[i].color;
 		if (down[i].color)
-			paint_tile(down + i, &tetr->img);
+			paint_tile(down + i, &tetr->img, true);
 		else
 			clean_piece_tile(tetr, down + i);
 	}
