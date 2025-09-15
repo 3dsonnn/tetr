@@ -15,7 +15,7 @@
 void	init_pieces(t_piece *pieces)
 {
 	pieces[SQUARE] = (t_piece){.color = SQUARE_COLOR, .type = SQUARE};
-	pieces[STRAIGHT] = (t_piece){.color = STRAIGHT_COLOR, .type = STRAIGHT};
+	pieces[STRAIGHT] = (t_piece){.color = STRAIGHT_COLOR, .type = STRAIGHT, .straight_rotation = 0};
 	pieces[T_SHAPE] = (t_piece){.color = T_SHAPE_COLOR, .type = T_SHAPE};
 	pieces[TILTED_S] = (t_piece){.color = TILTED_S_COLOR, .type = TILTED_S};
 	pieces[TILTED_Z] = (t_piece){.color = TILTED_Z_COLOR, .type = TILTED_Z};

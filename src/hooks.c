@@ -65,7 +65,7 @@ static int	my_mlx_loop_hook(t_tetr *tetr)
 	if (cur_time - last_time > BREAK
 		|| (tetr->down && (cur_time - last_time > 50)))
 	{
-		//fall_piece(tetr);
+		fall_piece(tetr);
 		last_time = cur_time;
 	}
 	update_time(tetr);

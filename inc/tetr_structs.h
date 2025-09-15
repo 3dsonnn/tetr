@@ -15,6 +15,7 @@
 
 # include "my_mlx.h"
 # include "tetr.h"
+# include <stdbool.h>
 
 # define TEXTURES 14
 # define BREAK 800
@@ -85,6 +86,7 @@ typedef struct s_piece
 	t_point		hollow[4];
 	unsigned int	color;
 	t_type		type;
+	bool		straight_rotation;
 }				t_piece;
 
 typedef struct s_player
