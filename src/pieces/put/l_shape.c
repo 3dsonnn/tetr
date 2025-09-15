@@ -16,7 +16,7 @@ void    l_shape(t_point start, unsigned int color, t_img *img)
 {
     t_tile  tile;
 
-    tile = (t_tile){.color = color};
+    tile = (t_tile){.crd = start, .color = color};
     tile.crd.x += (2 * TILE);
     paint_tile(&tile, img, true);
     tile.crd.x -= (2 * TILE);
