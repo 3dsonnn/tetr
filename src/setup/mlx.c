@@ -19,7 +19,7 @@ static void	get_texture(t_tetr *tetr, t_img *texture)
 							MOON, BEACH, BONFIRE, GARNET, EFINDA};
 	int			index;
 
-	index = rand() % TEXTURES;
+	index = 10;
     if (open((char *)paths[index], O_RDONLY) < 0)
 		deallocate_tetr(tetr, strerror(errno), 1);
 	texture->img = mlx_xpm_file_to_image(tetr->mlx, (char *)paths[index], &texture->size.x, &texture->size.y);

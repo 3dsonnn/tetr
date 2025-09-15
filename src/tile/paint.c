@@ -23,7 +23,6 @@ void    paint_tile(t_tile *tile, t_img *img)
 	}
 }
 
-
 void	clean_piece_tile(t_tetr *tetr, t_tile *tile)
 {
 	tile->color = 0;
