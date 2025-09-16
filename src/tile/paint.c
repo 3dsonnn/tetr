@@ -16,9 +16,12 @@ void    paint_tile(t_tile *tile, t_img *img, bool paint_dark)
 {
 	if (!tile)
 		return ;
-    int end = roundf(TILE / 8.0f);
-	int	lerp_color = my_mlx_get_lerp_color(0, tile->color, 0.4f);
+    int end;
+	int	lerp_color;
 
+	if (paint_dark)
+		lerp_color = my_mlx_get_lerp_color(0, tile->color, 0.4f);
+	end = roundf(TILE / 8.0f);
     for (int y = 0; y < TILE; y++)
     {
         for (int x = 0; x < TILE; x++)
