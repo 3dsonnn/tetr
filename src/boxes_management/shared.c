@@ -12,15 +12,15 @@
 
 #include "../../inc/tetr.h"
 
-void    clean_box(t_img *img, t_img texture, t_plane size)
+void    clean_box(t_img *img, const t_img *texture, const t_plane *size)
 {
     my_mlx_put_img_to_img((t_img_to_img){
         .dst = img,
-        .src = texture,
+        .src = *texture,
         .aux = NULL,
-        .dst_point = (t_point){.x = size.x0, .y = size.y0},
-        .src_point = (t_point){.x = size.x0, .y = size.y0},
-        .size = (t_point){.x = size.x - size.x0, .y = size.y - size.y0},
+        .dst_point = (t_point){.x = size->x0, .y = size->y0},
+        .src_point = (t_point){.x = size->x0, .y = size->y0},
+        .size = (t_point){.x = size->x - size->x0, .y = size->y - size->y0},
         .filter = 0,
         .skip = 0,
         .color_aux = 0

@@ -25,7 +25,7 @@ void    fill_next_box(t_tetr *tetr, t_plane size)
     {
         size.y0 = start_y + step_y * i;
         size.y = size.y0 + step_y;
-        put_piece(tetr->next_stack[i], size, &tetr->img);
+        put_piece(&tetr->next_stack[i], &size, &tetr->img);
     }
 }
 
@@ -34,7 +34,7 @@ void    move_next_box(t_tetr *tetr)
     int i;
 
     i = -1;
-    clean_box(&tetr->img, tetr->texture, tetr->next_box_size);
+    clean_box(&tetr->img, &tetr->texture, &tetr->next_box_size);
     while (++i < 4)
         tetr->next_stack[i] = tetr->next_stack[i + 1];
     tetr->next_stack[i] = get_random_piece(tetr);

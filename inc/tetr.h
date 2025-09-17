@@ -82,21 +82,19 @@ int	render_piece( t_tetr *tetr, bool renderize );
 // UPDATED
 void    update_piece(t_tetr *tetr);
 // PUT
-void    put_piece(t_piece ref, t_plane size, t_img *img);
-void    square(t_point start, unsigned int color, t_img *img);
-void    straight(t_point start, unsigned int color, t_img *img);
-void    tilted_z(t_point start, unsigned int color, t_img *img);
-void    tilted_s(t_point start, unsigned int color, t_img *img);
-void    t_shape(t_point start, unsigned int color, t_img *img);
-void    l_shape(t_point start, unsigned int color, t_img *img);
-void    l_mirrored(t_point start, unsigned int color, t_img *img);
+void    put_piece(t_piece *curr_piece, const t_plane *size, t_img *img);
+void    draw_square_divisions( t_point start, t_img *img );
+void    draw_straight_divisions( t_point start, t_img *img );
+void    draw_t_divisions( t_point start, t_img *img );
+void    draw_l_divisions( t_type piece_type, t_point start, t_img *img );
+void    draw_s_or_z_divisions( t_type piece_type, t_point start, t_img *img );
 
 // UPDATE_SCENARIO
 void    update_scenario(t_tetr *tetr);
 
 // BOXES
-void    clean_box(t_img *img, t_img texture, t_plane size);
-    //  NEXT
+void    clean_box(t_img *img, const t_img *texture, const t_plane *size);
+//  NEXT
 void    fill_next_box(t_tetr *tetr, t_plane size);
 void    move_next_box(t_tetr *tetr);
     //  HOLD
@@ -117,7 +115,6 @@ void		init_tiles(t_tile ***tiles);
 void		set_tiles(t_tile **tiles, t_point padd);
 void        paint_tile(t_tile *tile, t_img *img, bool paint_dark);
 extern void	swap_tile_attr(t_tile *a, t_tile *z);
-
 
 void	get_piece_limits( const t_point *coords, t_point *great_x, t_point *great_y, t_point *low_x, t_point *low_y );
 bool	object_will_collide( t_tetr *tetr );

@@ -38,13 +38,7 @@ SRC =	src/main.c						\
 		src/pieces/burn_lines.c			\
 		src/pieces/get_random_piece.c	\
 		src/pieces/update_piece.c		\
-		src/pieces/put/square.c			\
-		src/pieces/put/l_mirrored.c		\
-		src/pieces/put/l_shape.c		\
-		src/pieces/put/tilted_z.c		\
-		src/pieces/put/tilted_s.c		\
-		src/pieces/put/straight.c		\
-		src/pieces/put/t_shape.c		\
+		src/pieces/piece_on_box_utils.c	\
 		src/utils.c						\
 
 INC =	-I./inc							\
