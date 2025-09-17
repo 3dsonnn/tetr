@@ -26,8 +26,8 @@ void	init_pieces(t_piece *pieces)
 					{{4, 0}, {4, 1}, {5, 0}, {5, 1}}, //SQUARE COORDS
 					{{3, 0}, {4, 0}, {5, 0}, {6, 0}}, //STRAIGHT COORDS
 					{{3, 1}, {4, 1}, {4, 0}, {5, 1}}, //T_SHAPE COORDS
-					{{5, 1}, {4, 1}, {4, 0}, {3, 0}}, //TILTED_S COORDS
 					{{3, 1}, {4, 1}, {4, 0}, {5, 0}}, //TILTED_Z COORDS
+					{{5, 1}, {4, 1}, {4, 0}, {3, 0}}, //TILTED_S COORDS
 					{{3, 1}, {4, 1}, {5, 1}, {5, 0}}, //L_SHAPE COORDS
 					{{5, 1}, {4, 1}, {3, 1}, {3, 0}}  //L_MIRRORED
 	};

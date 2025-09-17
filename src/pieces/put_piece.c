@@ -76,7 +76,7 @@ static void    init_piece_coords_on_box( t_type piece_type, t_point *coords, t_p
     {
         coords[1] = (t_point){start.x + TILE, start.y};
         coords[2] = (t_point){coords[1].x, start.y + TILE};
-        coords[3] = (t_point){coords[1].x + TILE, coords[1].y};
+        coords[3] = (t_point){coords[1].x + TILE, coords[2].y};
     }
     else if (piece_type == TILTED_S)
     {
