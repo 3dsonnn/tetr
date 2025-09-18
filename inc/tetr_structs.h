@@ -98,6 +98,7 @@ typedef struct s_player
 typedef struct s_tetr
 {
 	int					down;
+	int					up;
 	int					hold_toggle;
 	t_plane				imbroglio_bar_size;
 	t_plane				hold_box_size;

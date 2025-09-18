@@ -26,6 +26,7 @@ void    init_tetr(t_tetr *tetr)
 	tetr->time_box_size = (t_plane){0, 0, 0, 0};
 	tetr->imbroglio_bar_size = (t_plane){0, 0, 0, 0};
 	ft_memset(&tetr->cur, 0, sizeof(t_piece));
+	tetr->up = 0;
 	tetr->down = 0;
 	tetr->hold_toggle = -1;
 	tetr->start_time = 0;
