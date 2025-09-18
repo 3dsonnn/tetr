@@ -41,6 +41,7 @@
 # define SPINEL "assets/spinel.xpm"
 # define BONFIRE "assets/bonfire.xpm"
 # define CLUSTER "assets/cluster.xpm"
+# define THE_OTHER_SIDE "assets/the_other_side.xpm"
 
 # define AMETHYST "assets/amethyst.xpm"
 # define GARNET "assets/garnet.xpm"

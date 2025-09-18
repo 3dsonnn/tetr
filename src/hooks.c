@@ -27,6 +27,8 @@ static inline int	my_mlx_key_release(int keycode, t_tetr *tetr)
 
 static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 {
+//	static	unsigned long long last_time;
+
 	if (keycode == ESC)
 		deallocate_tetr(tetr, "The Game Was Closed Through The ESC Key Press.", 0);
 	if (keycode == SPACE)
@@ -38,7 +40,11 @@ static int	my_mlx_key_press(int keycode, t_tetr *tetr)
 		update_piece(tetr);
 	}
 	else if (keycode == UP)
-		rotate_piece(tetr);
+	{
+		//if (ft_gettimeofday() - last_time > 50)
+			rotate_piece(tetr);
+
+	}
 	else if (keycode == DOWN)
 		tetr->down = 1;
 	else if (keycode == LEFT || keycode == RIGHT)

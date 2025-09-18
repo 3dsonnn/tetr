@@ -15,20 +15,20 @@
 static void	get_texture(t_tetr *tetr, t_img *texture)
 {
 	const char	*paths[] = {SKY, EYES, HOME, JPINA, OCEAN,
-							CLUSTER, SPINEL, LAPIS, AMETHYST,
-							MOON, BEACH, BONFIRE, GARNET, EFINDA};
+					CLUSTER, SPINEL, LAPIS, AMETHYST,
+					MOON, BEACH, BONFIRE, GARNET, EFINDA, THE_OTHER_SIDE};
 	int			index;
 
-	index = 10;
-    if (open((char *)paths[index], O_RDONLY) < 0)
+	index = 14;
+	if (open((char *)paths[index], O_RDONLY) < 0)
 		deallocate_tetr(tetr, strerror(errno), 1);
 	texture->img = mlx_xpm_file_to_image(tetr->mlx, (char *)paths[index], &texture->size.x, &texture->size.y);
 	if (!texture->img)
 		deallocate_tetr(tetr, "Failed to convert the .xpm file into an image. Make sure the assets weren't modified, and then you can try again, please!", 1);
-    my_mlx_get_data_addr(texture);
-    if (!texture->addr)
+	my_mlx_get_data_addr(texture);
+	if (!texture->addr)
 		deallocate_tetr(tetr, "Failed to get the address of the background image.", 1);
-    my_mlx_resize_img(tetr->mlx, texture, (t_point){WIDTH, HEIGHT});
+	my_mlx_resize_img(tetr->mlx, texture, (t_point){WIDTH, HEIGHT});
 }
 
 void	setup_mlx(t_tetr *tetr)
@@ -58,6 +58,6 @@ void	setup_mlx(t_tetr *tetr)
 		.skip = 0,
 		.color_aux = 0
 	});
-    mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->img.img, 0, 0);
-	mlx_do_key_autorepeatoff(tetr->mlx);
+	mlx_put_image_to_window(tetr->mlx, tetr->win, tetr->img.img, 0, 0);
+	//mlx_do_key_autorepeatoff(tetr->mlx);
 }

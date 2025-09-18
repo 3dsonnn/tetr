@@ -34,8 +34,8 @@ static void	format_time(unsigned long long elapsed_ms, char **buffer)
 
 void    update_time(t_tetr *tetr)
 {
-    format_time(ft_gettimeofday() - tetr->start_time, &tetr->cur_time);
-    my_mlx_draw_line_to_img(&tetr->img,
-        (t_point){tetr->time_box_size.x0, tetr->time_box_size.y0},
-        (t_point){(tetr->time_box_size.x - tetr->time_box_size.x0), (tetr->time_box_size.y - tetr->time_box_size.y0)}, WHITE);
+	format_time(ft_gettimeofday() - tetr->start_time, &tetr->cur_time);
+	my_mlx_draw_line_to_img(&tetr->img,
+	(t_point){tetr->time_box_size.x0, tetr->time_box_size.y0},
+	(t_point){(tetr->time_box_size.x - tetr->time_box_size.x0), (tetr->time_box_size.y - tetr->time_box_size.y0)}, WHITE);
 }

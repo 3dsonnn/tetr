@@ -21,4 +21,5 @@ void	update_piece(t_tetr *tetr)
 	move_next_box(tetr);
 	if (object_will_collide( tetr ))
 		deallocate_tetr(tetr, "END OF THE GAME YOU LOST !!!!!!!!!", 0);
+	render_piece(tetr, true);
 }

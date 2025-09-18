@@ -27,7 +27,7 @@
 
 # define TILE 32
 # define TOTAL_TILE_X 10
-# define TOTAL_TILE_Y 20
+# define TOTAL_TILE_Y 25
 
 # define SPACE 32
 # define ALT 65513

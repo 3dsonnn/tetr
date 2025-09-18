@@ -50,6 +50,7 @@ void    move_piece(t_tetr *tetr, int keycode)
 	t_piece	*piece;
 	t_point	great_x;
 	t_point	low_x;
+	t_point	copy[4];
 	char	step;
 
 	piece = &tetr->cur;
@@ -58,22 +59,20 @@ void    move_piece(t_tetr *tetr, int keycode)
 	else
 		step = 1;
 	get_piece_limits( piece->coords, &great_x, NULL, &low_x, NULL );
-	if (step > 0)
-	{
-		if (great_x.x == TOTAL_TILE_X - 1 || tetr->tiles[great_x.y][great_x.x + 1].color)
-			return ;
-	}
-	else
-	{
-		if (low_x.x == 0 || tetr->tiles[low_x.y][low_x.x - 1].color)
-			return ;
-	}
+	if (step > 0 && great_x.x == TOTAL_TILE_X - 1)
+		return ;
+	if (step < 0 && low_x.x == 0)
+		return ;
+	for (int i = 0; i < 4; i++)
+		copy[i] = piece->coords[i];
 	render_piece(tetr, false);
 	for (int i = 0; i < 4; i++)
 		piece->coords[i].x += step;
+	if (object_will_collide( tetr ))
+		for (int i = 0; i < 4; i++)
+			piece->coords[i].x -= step;
 	render_piece(tetr, true);
 }
-
 
 void	fall_piece(t_tetr *tetr)
 {
